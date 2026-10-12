@@ -650,9 +650,11 @@ jobs:
         with:
           debian-codename: wheezy
           add-cross-builder: false
-          run-build-dep: false
+          run-build-dep: true
           buildpackage-opts: -rfakeroot -D -us -uc -j1
           source-dir: test
+      - run: |
+          ls -ls debian/artifacts
       - run: |
           test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
           dpkg --info debian/artifacts/test_1_amd64.deb

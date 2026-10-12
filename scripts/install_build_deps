@@ -2,10 +2,10 @@
 
 set -eu
 
-# if [ "${INPUT_RUN_BUILD_DEP}" = "true" ]; then
+if [ "${INPUT_RUN_BUILD_DEP}" = "true" ]; then
 # shellcheck disable=SC2086
   apt-get build-dep $INPUT_APT_OPTS -- "./$INPUT_SOURCE_DIR"
-# fi
+fi
 
 # In theory, explicitly installing dpkg-dev would not be necessary. `apt-get
 # build-dep` will *always* install build-essential which depends on dpkg-dev.

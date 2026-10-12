@@ -66,11 +66,11 @@ runs:
     - name: Check Dockerfile
       id: file_check
       run: |
-        if [ -f "${{ github.action_path }}/containers/Dockerfile.${{ inputs.debian-codename }}" ]; then
-          cat "${{ github.action_path }}/containers/Dockerfile.${{ inputs.debian-codename }}" > ./.Dockerfile.${{ inputs.debian-codename }}
+        if [ -f "${{ github.action_path }}containers/Dockerfile.${{ inputs.debian-codename }}" ]; then
+          cat "${{ github.action_path }}containers/Dockerfile.${{ inputs.debian-codename }}" > ./.Dockerfile.${{ inputs.debian-codename }}
           echo "docker_image=.Dockerfile.${{ inputs.debian-codename }}" >> $GITHUB_OUTPUT
           echo "rm_docker_image=true" >> $GITHUB_OUTPUT
-        elif [ -n "${{ inputs.debian-codename }}" ]; then
+        elif [ ! -z "${{ inputs.debian-codename }}" ]; then
           echo "docker_image=debian:${{ inputs.debian-codename }}-slim" >> $GITHUB_OUTPUT
         else
           echo "docker_image=${{ inputs.docker-image }}" >> $GITHUB_OUTPUT

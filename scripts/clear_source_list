@@ -2,6 +2,4 @@
 
 set -eu
 
-if [ -n "$INPUT_EXTRA_REPOS" ]; then
-	echo "" > "/etc/apt/sources.list"
-fi
+echo "" > "/etc/apt/sources.list"

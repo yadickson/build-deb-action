@@ -162,7 +162,7 @@ in_container install \
 	/etc/gitconfig
 end_group
 
-if [ "INPUT_CLEAR_SOURCE_LIST" = "true" ]; then
+if [ "$INPUT_CLEAR_SOURCE_LIST" = "true" ]; then
 	start_group "Executing clear source list"
 	in_container /github/action/scripts/clear_source_list
 	end_group

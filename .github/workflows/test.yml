@@ -676,6 +676,7 @@ jobs:
             # These are intentionally given as two entries:
             deb [trusted=yes] http://archive.debian.org/debian/ wheezy main contrib
             deb [trusted=yes] http://archive.debian.org/debian-security/ wheezy/updates main
+          extra-build-deps: build-essential
       - run: |
           ls -ls debian/artifacts
       - run: |

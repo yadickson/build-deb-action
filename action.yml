@@ -74,7 +74,6 @@ runs:
           echo "docker_image=debian:${{ inputs.debian-codename }}-slim" >> $GITHUB_OUTPUT
         else
           echo "docker_image=${{ inputs.docker-image }}" >> $GITHUB_OUTPUT
-        docker-image
         fi
       shell: bash
     - env:

@@ -16,7 +16,7 @@ EOF
 # Adapted from pbuilder's and sbuild's support for cross-building:
 if [ -n "$INPUT_HOST_ARCH" ]; then
 	dpkg --add-architecture "$INPUT_HOST_ARCH"
-	if [ "${INPUT_ADD_CROSS_BUILDER}" == "true" ]; then
+	if [ "${INPUT_ADD_CROSS_BUILDER}" = "true" ]; then
   	INPUT_EXTRA_BUILD_DEPS="$INPUT_EXTRA_BUILD_DEPS crossbuild-essential-$INPUT_HOST_ARCH"
 	fi
 	INPUT_EXTRA_BUILD_DEPS="$INPUT_EXTRA_BUILD_DEPS libc-dev:$INPUT_HOST_ARCH"
@@ -40,7 +40,7 @@ fi
 apt-get update
 
 
-if [ "${INPUT_RUN_BUILD_DEP}" == "true" ]; then
+if [ "${INPUT_RUN_BUILD_DEP}" = "true" ]; then
 # shellcheck disable=SC2086
   apt-get build-dep $INPUT_APT_OPTS -- "./$INPUT_SOURCE_DIR"
 fi

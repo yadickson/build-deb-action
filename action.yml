@@ -44,6 +44,10 @@ inputs:
     default: ./
     description: Path relative to $GITHUB_WORKSPACE that contains the package sources
     required: true
+  clear-source-list:
+    default: 'false'
+    description: Clear source list into docker image
+    required: true
   add-cross-builder:
     default: 'true'
     description: Install crossbuild-essential-<ARCH> package
@@ -89,6 +93,7 @@ runs:
         INPUT_SETUP_HOOK: ${{ inputs.setup-hook }}
         INPUT_SOURCE_DIR: ${{ inputs.source-dir }}
         INPUT_ADD_CROSS_BUILDER: ${{ inputs.add-cross-builder }}
+        INPUT_CLEAR_SOURCE_LIST: ${{ inputs.clear-source-list }}
       id: run
       run: ${{ github.action_path }}/scripts/run
       shell: bash

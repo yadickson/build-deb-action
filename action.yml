@@ -3,7 +3,7 @@ name: Build Debian packages
 description: Build Debian packages with dpkg-buildpackage in a flexible environment.
 inputs:
   apt-opts:
-    default: --install-recommends --no-install-suggests
+    default: --no-install-recommends --no-install-suggests
     description: Options to be passed to apt-get
     required: false
   artifacts-dir:
@@ -15,6 +15,7 @@ inputs:
       and before executing dpkg-buildpackage
     required: false
   buildpackage-opts:
+    default: '-sa -us -uc -nc'
     description: Options to be passed to dpkg-buildpackage
     required: false
   docker-image:
@@ -48,6 +49,30 @@ inputs:
     default: 'false'
     description: Clear source list repos into docker image
     required: true
+  mirror-repo:
+    default: 'deb.debian.org'
+    description: Mirror from debian packages
+    required: false
+  mirror-updates-repo:
+    default: 'deb.debian.org'
+    description: Mirror updates from debian packages
+    required: false
+  mirror-security-repo:
+    default: 'security.debian.org'
+    description: Mirror security from debian packages
+    required: false
+  mirror-repo-areas:
+    default: 'main'
+    description: Mirror areas from debian packages
+    required: false
+  mirror-updates-repo-areas:
+    default: 'main'
+    description: Mirror updates areas from debian packages
+    required: false
+  mirror-security-repo-areas:
+    default: 'main'
+    description: Mirror security areas from debian packages
+    required: false
 outputs:
   artifacts:
     description: Newline-separated list of artifacts (the .buildinfo, .changes
@@ -72,6 +97,12 @@ runs:
         INPUT_SETUP_HOOK: ${{ inputs.setup-hook }}
         INPUT_SOURCE_DIR: ${{ inputs.source-dir }}
         INPUT_CLEAN_REPOS: ${{ inputs.clean-repos }}
+        INPUT_MIRROR_REPO: ${{ inputs.mirror-repo }}
+        INPUT_MIRROR_UPDATES_REPO: ${{ inputs.mirror-updates-repo }}
+        INPUT_MIRROR_SECURITY_REPO: ${{ inputs.mirror-security-repo }}
+        INPUT_MIRROR_REPO_AREAS: ${{ inputs.mirror-repo-areas }}
+        INPUT_MIRROR_UPDATES_REPO_AREAS: ${{ inputs.mirror-updates-repo-areas }}
+        INPUT_MIRROR_SECURITY_REPO_AREAS: ${{ inputs.mirror-security-repo-areas }}
       id: run
       run: ${{ github.action_path }}/scripts/run
       shell: bash

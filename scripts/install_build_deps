@@ -2,7 +2,7 @@
 
 set -eu
 
-if [ "${INPUT_RUN_BUILD_DEP}" = "true" ]; then
+if [ "${INPUT_RUN_BUILD_DEP}" == "true" ]; then
 # shellcheck disable=SC2086
   apt-get build-dep $INPUT_APT_OPTS -- "./$INPUT_SOURCE_DIR"
 fi

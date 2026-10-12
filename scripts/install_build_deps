@@ -37,11 +37,11 @@ fi
 apt-get update
 apt-get upgrade -y
 
-# shellcheck disable=SC2086
-apt-get build-dep $INPUT_APT_OPTS -- "./$INPUT_SOURCE_DIR" || mk-build-deps --install --root sudo --remove
-
 # In theory, explicitly installing dpkg-dev would not be necessary. `apt-get
 # build-dep` will *always* install build-essential which depends on dpkg-dev.
 # But let’s be explicit here.
 # shellcheck disable=SC2086
 apt-get install $INPUT_APT_OPTS -- devscripts dpkg-dev libdpkg-perl $INPUT_EXTRA_BUILD_DEPS
+
+# shellcheck disable=SC2086
+apt-get build-dep $INPUT_APT_OPTS -- "./$INPUT_SOURCE_DIR" || mk-build-deps --install --root sudo --remove

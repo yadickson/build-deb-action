@@ -181,7 +181,7 @@ if [ -n "$INPUT_BEFORE_BUILD_HOOK" ]; then
 fi
 
 start_group "Building package"
-in_container /github/action/scripts/build_package
+in_container /github/action/scripts/build_packages
 end_group
 
 start_group "Moving artifacts"

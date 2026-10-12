@@ -522,7 +522,7 @@ jobs:
         env:
           DEB_BUILD_OPTIONS: noautodbgsym
         with:
-          debian-codename: forky
+          docker-image: debian:forky-slim
           buildpackage-opts: --build=binary --no-sign
           source-dir: test
       - run: |
@@ -542,7 +542,7 @@ jobs:
         env:
           DEB_BUILD_OPTIONS: noautodbgsym
         with:
-          debian-codename: trixie
+          docker-image: debian:trixie-slim
           buildpackage-opts: --build=binary --no-sign
           source-dir: test
       - run: |
@@ -562,7 +562,7 @@ jobs:
         env:
           DEB_BUILD_OPTIONS: noautodbgsym
         with:
-          debian-codename: bookworm
+          docker-image: debian:bookworm-slim
           buildpackage-opts: --build=binary --no-sign
           source-dir: test
       - run: |
@@ -580,9 +580,15 @@ jobs:
         env:
           DEB_BUILD_OPTIONS: noautodbgsym
         with:
-          debian-codename: bullseye
+          docker-image: debian:bullseye-slim
           buildpackage-opts: --build=binary --no-sign
           source-dir: test
+          clean-repos: true
+          extra-repos: |
+            # These are intentionally given as two entries:
+            deb [trusted=yes] http://archive.debian.org/debian/ bullseye main contrib
+            deb [trusted=yes] http://archive.debian.org/debian/ bullseye-updates main contrib
+            deb [trusted=yes] http://archive.debian.org/debian-security/ bullseye-security main
       - run: |
           ls -ls debian/artifacts
       - run: |
@@ -603,9 +609,15 @@ jobs:
         env:
           DEB_BUILD_OPTIONS: noautodbgsym
         with:
-          debian-codename: buster
+          docker-image: debian:buster-slim
           buildpackage-opts: --build=binary --no-sign
           source-dir: test
+          clean-repos: true
+          extra-repos: |
+            # These are intentionally given as two entries:
+            deb [trusted=yes] http://archive.debian.org/debian/ buster main contrib
+            deb [trusted=yes] http://archive.debian.org/debian/ buster-updates main contrib
+            deb [trusted=yes] http://archive.debian.org/debian-security/ buster/updates main
       - run: |
           ls -ls debian/artifacts
       - run: |
@@ -627,10 +639,14 @@ jobs:
         env:
           DEB_BUILD_OPTIONS: noautodbgsym
         with:
-          debian-codename: stretch
-          add-cross-builder: false
+          docker-image: debian:stretch-slim
           buildpackage-opts: --build=binary --no-sign
           source-dir: test
+          clean-repos: true
+          extra-repos: |
+            # These are intentionally given as two entries:
+            deb [trusted=yes] http://archive.debian.org/debian/ stretch main contrib
+            deb [trusted=yes] http://archive.debian.org/debian-security/ stretch/updates main
       - run: |
           ls -ls debian/artifacts
       - run: |

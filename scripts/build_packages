@@ -38,7 +38,7 @@ mkdir -p "${CACHE_DIR}"
 pbuilder \
   --create \
   --basetgz "${BASE_TGZ}" \
-  --debootstrapopts --arch=${OS_ARCHITECTURE} \
+  --debootstrapopts --arch="${OS_ARCHITECTURE}" \
   --debootstrapopts --variant=buildd \
   --debootstrapopts --keyring="/usr/share/keyrings/${OS_DIST_NAME}-archive-keyring.gpg" \
   --architecture "${OS_ARCHITECTURE}" \
@@ -69,8 +69,10 @@ VER=$(dpkg-parsechangelog | grep "^Version:" | awk '{print $2}')
 
 fakeroot debian/rules get-orig-source || fakeroot debian/rules orig || true
 
-if [ ! -f ../"${PKG}_${VER}".tar.* ]; then
-  tar -cJ ${GITHUB_WORKSPACE} --exclude-vcs --exclude="debian" -f "../${PKG}_${VER}.orig.tar.xz"
+FOUND=$(ls ../*.tar.*)
+
+if [ -z "${FOUND}" ]; then
+  tar -cJ "${GITHUB_WORKSPACE}" --exclude-vcs --exclude="debian" -f "../${PKG}_${VER}.orig.tar.xz"
 fi
 
 debuild -S -nc -uc -us
@@ -88,4 +90,4 @@ pbuilder \
   --bindmounts "${INPUT_ARTIFACTS_DIR}" \
   --aptcache "${CACHE_DIR}" \
   --debuildopts "${INPUT_BUILDPACKAGE_OPTS}" \
-  *.dsc
+  ./"${PKG}_${VER}".*.dsc

@@ -14,18 +14,7 @@ fi
 
 cd -- "$INPUT_SOURCE_DIR"
 
-PKG=$(dpkg-parsechangelog | grep "^Source:" | awk '{print $2}')
-VER=$(dpkg-parsechangelog | grep "^Version:" | awk '{print $2}')
-
-fakeroot debian/rules get-orig-source || fakeroot debian/rules orig || true
-
-FOUND=$(ls ../*.tar.*)
-
-if [ -z "${FOUND}" ]; then
-  tar -cJ "${GITHUB_WORKSPACE}" --exclude-vcs --exclude="debian" -f "../${PKG}_${VER}.orig.tar.xz"
-fi
-
-debuild -S -nc -uc -us
+debuild -S -nc -uc -us || true
 
 # shellcheck disable=SC2086
 dpkg-buildpackage $INPUT_BUILDPACKAGE_OPTS

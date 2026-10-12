@@ -38,7 +38,7 @@ apt-get update
 apt-get upgrade -y
 
 # shellcheck disable=SC2086
-# apt-get build-dep $INPUT_APT_OPTS -- "./$INPUT_SOURCE_DIR"
+apt-get build-dep $INPUT_APT_OPTS -- "./$INPUT_SOURCE_DIR" || true
 
 # In theory, explicitly installing dpkg-dev would not be necessary. `apt-get
 # build-dep` will *always* install build-essential which depends on dpkg-dev.

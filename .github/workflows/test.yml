@@ -594,13 +594,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - run: |
+          sed -i "s/debhelper-compat (= 13)/debhelper-compat (= 10)/g" debian/control
+        shell: bash
       - uses: ./
         env:
           DEB_BUILD_OPTIONS: noautodbgsym
         with:
           debian-codename: buster
-          before-build-hook: |
-            sed -i "s/debhelper-compat (= 13)/debhelper-compat (= 10)/g" test/debian/control
           buildpackage-opts: --build=binary --no-sign
           source-dir: test
       - run: |
@@ -616,14 +617,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - run: |
+          sed -i "s/debhelper-compat (= 13)/debhelper-compat (= 10)/g" debian/control
+        shell: bash
       - uses: ./
         env:
           DEB_BUILD_OPTIONS: noautodbgsym
         with:
           debian-codename: stretch
           add-cross-builder: false
-          before-build-hook: |
-            sed -i "s/debhelper-compat (= 13)/debhelper-compat (= 10)/g" test/debian/control
           buildpackage-opts: --build=binary --no-sign
           source-dir: test
       - run: |
@@ -639,6 +641,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - run: |
+          sed -i "s/debhelper-compat (= 13)/debhelper-compat (= 9)/g" debian/control
+        shell: bash
       - uses: ./
         env:
           DEB_BUILD_OPTIONS: noautodbgsym
@@ -646,8 +651,6 @@ jobs:
           debian-codename: jessie
           add-cross-builder: false
           run-build-dep: false
-          before-build-hook: |
-            sed -i "s/debhelper-compat (= 13)/debhelper-compat (= 9)/g" test/debian/control
           buildpackage-opts: -rfakeroot -D -us -uc -j1
           source-dir: test
       - run: |
@@ -663,13 +666,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - run: |
+          sed -i "s/debhelper-compat (= 13)/debhelper-compat (= 8)/g" debian/control
+        shell: bash
       - uses: ./
         env:
           DEB_BUILD_OPTIONS: noautodbgsym
         with:
           debian-codename: wheezy
-          before-build-hook: |
-            sed -i "s/debhelper-compat (= 13)/debhelper-compat (= 8)/g" test/debian/control
           add-cross-builder: false
           run-build-dep: false
           buildpackage-opts: -rfakeroot -D -us -uc -j1

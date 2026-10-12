@@ -3,64 +3,14 @@
 set -eu
 
 # Adapted from pbuilder's and sbuild's support for cross-building:
-#if [ -n "$INPUT_HOST_ARCH" ]; then
-#	if [ -z "${CONFIG_SITE-}" ]; then
-#		export CONFIG_SITE="/etc/dpkg-cross/cross-config.$INPUT_HOST_ARCH"
-#	fi
-#	export DEB_BUILD_OPTIONS="${DEB_BUILD_OPTIONS:+$DEB_BUILD_OPTIONS }nocheck"
-#	export DEB_BUILD_PROFILES="${DEB_BUILD_PROFILES:+$DEB_BUILD_PROFILES }cross nocheck"
-#	INPUT_BUILDPACKAGE_OPTS="$INPUT_BUILDPACKAGE_OPTS --host-arch=$INPUT_HOST_ARCH"
-#fi
-
-# shellcheck disable=SC2086
-# dpkg-buildpackage $INPUT_BUILDPACKAGE_OPTS
-
-OS_ARCHITECTURE=$(dpkg --print-architecture)
-OS_DIST_NAME=$(lsb_release -s -i | awk '{print tolower($1)}')
-OS_CODE_NAME=$(lsb_release -s -c)
-OS_MIRROR="http://${INPUT_MIRROR_REPO}/${OS_DIST_NAME}/"
-OS_AREAS="${INPUT_MIRROR_REPO_AREAS}"
-
-if [ "${OS_DIST_NAME}" = "debian" ]; then
-  FULL_MIRROR_UPDATES_REPO="deb http://${INPUT_MIRROR_UPDATES_REPO}/ ${OS_CODE_NAME}-updates ${INPUT_MIRROR_UPDATES_REPO_AREAS}"
-  FULL_MIRROR_SECURITY_REPO="deb http://${INPUT_MIRROR_SECURITY_REPO}/ ${OS_CODE_NAME}/updates ${INPUT_MIRROR_SECURITY_REPO_AREAS}"
+if [ -n "$INPUT_HOST_ARCH" ]; then
+	if [ -z "${CONFIG_SITE-}" ]; then
+		export CONFIG_SITE="/etc/dpkg-cross/cross-config.$INPUT_HOST_ARCH"
+	fi
+	export DEB_BUILD_OPTIONS="${DEB_BUILD_OPTIONS:+$DEB_BUILD_OPTIONS }nocheck"
+	export DEB_BUILD_PROFILES="${DEB_BUILD_PROFILES:+$DEB_BUILD_PROFILES }cross nocheck"
+	INPUT_BUILDPACKAGE_OPTS="$INPUT_BUILDPACKAGE_OPTS --host-arch=$INPUT_HOST_ARCH"
 fi
-
-OS_OTHER_MIRROR="${FULL_MIRROR_UPDATES_REPO} | ${FULL_MIRROR_SECURITY_REPO}"
-
-BASE_TGZ="base-${OS_DIST_NAME}-${OS_CODE_NAME}-${OS_ARCHITECTURE}.tgz"
-BUILD_DIR="debian/builddir"
-CACHE_DIR="debian/cachedir"
-
-mkdir -p "${BUILD_DIR}"
-mkdir -p "${CACHE_DIR}"
-
-pbuilder \
-  --create \
-  --basetgz "${BASE_TGZ}" \
-  --debootstrapopts --arch="${OS_ARCHITECTURE}" \
-  --debootstrapopts --variant=buildd \
-  --debootstrapopts --keyring="/usr/share/keyrings/${OS_DIST_NAME}-archive-keyring.gpg" \
-  --architecture "${OS_ARCHITECTURE}" \
-  --distribution "${OS_CODE_NAME}" \
-  --mirror "${OS_MIRROR}" \
-  --othermirror "${OS_OTHER_MIRROR}" \
-  --components "${OS_AREAS}" \
-  --buildplace "${BUILD_DIR}" \
-  --bindmounts "${INPUT_ARTIFACTS_DIR}" \
-  --aptcache "${CACHE_DIR}"
-
-pbuilder \
-  --update \
-  --basetgz "${BASE_TGZ}" \
-  --architecture "${OS_ARCHITECTURE}" \
-  --distribution "${OS_CODE_NAME}" \
-  --mirror "${OS_MIRROR}" \
-  --othermirror "${OS_OTHER_MIRROR}" \
-  --buildplace "${BUILD_DIR}" \
-  --bindmounts "${INPUT_ARTIFACTS_DIR}" \
-  --aptcache "${CACHE_DIR}" \
-  --override-config
 
 cd -- "$INPUT_SOURCE_DIR"
 
@@ -77,17 +27,5 @@ fi
 
 debuild -S -nc -uc -us
 
-cp ../*.tar.* "${INPUT_ARTIFACTS_DIR}"
-cp ../*.dsc "${INPUT_ARTIFACTS_DIR}"
-
-pbuilder \
-  --build \
-  --basetgz "${BASE_TGZ}" \
-  --architecture "${OS_ARCHITECTURE}" \
-  --distribution "${OS_CODE_NAME}" \
-  --buildplace "${BUILD_DIR}" \
-  --buildresult "${INPUT_ARTIFACTS_DIR}" \
-  --bindmounts "${INPUT_ARTIFACTS_DIR}" \
-  --aptcache "${CACHE_DIR}" \
-  --debuildopts "${INPUT_BUILDPACKAGE_OPTS}" \
-  ./"${PKG}_${VER}".*.dsc
+# shellcheck disable=SC2086
+dpkg-buildpackage $INPUT_BUILDPACKAGE_OPTS

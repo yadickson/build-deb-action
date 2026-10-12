@@ -655,3 +655,32 @@ jobs:
           dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
           test -f debian/artifacts/test_1_amd64.buildinfo
           test -f debian/artifacts/test_1_amd64.changes
+
+  debian-codename-wheezy-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          sed -i "s/debhelper-compat (= 13)/debhelper (>= 9)/g" test/debian/control
+          echo "9" > test/debian/compat
+        shell: bash
+      - uses: ./
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          docker-image: debian:stretch-slim
+          buildpackage-opts: -rfakeroot -D -us -ui -uc -i -I -sa -j1
+          source-dir: test
+          clean-repos: true
+          extra-repos: |
+            # These are intentionally given as two entries:
+            deb [trusted=yes] http://archive.debian.org/debian/ wheezy main contrib
+            deb [trusted=yes] http://archive.debian.org/debian-security/ wheezy/updates main
+      - run: |
+          ls -ls debian/artifacts
+      - run: |
+          test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
+          dpkg --info debian/artifacts/test_1_amd64.deb
+          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
+          test -f debian/artifacts/test_1_amd64.buildinfo
+          test -f debian/artifacts/test_1_amd64.changes

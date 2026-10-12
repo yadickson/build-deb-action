@@ -93,7 +93,9 @@ if [ -f "$INPUT_DOCKER_IMAGE" ]; then
 	read -r INPUT_DOCKER_IMAGE <"$image_id_file" || :
 	end_group
 
-	rm -f "$GITHUB_WORKSPACE/$INPUT_DOCKER_IMAGE"
+  if [ -n "$INPUT_RM_DOCKER_IMAGE" ]; then
+	  rm -f "$GITHUB_WORKSPACE/$INPUT_DOCKER_IMAGE"
+	fi
 fi
 
 start_group "Starting build container"

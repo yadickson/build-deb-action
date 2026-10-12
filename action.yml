@@ -48,10 +48,6 @@ inputs:
     default: 'true'
     description: Install crossbuild-essential-<ARCH> package
     required: true
-  run-build-dep:
-    default: 'true'
-    description: Install dependency packages when run apt-get build-dep
-    required: true
   debian-codename:
     description: Replace docker-image for Dockerfile.debian-codename if exists
     required: false
@@ -93,7 +89,6 @@ runs:
         INPUT_SETUP_HOOK: ${{ inputs.setup-hook }}
         INPUT_SOURCE_DIR: ${{ inputs.source-dir }}
         INPUT_ADD_CROSS_BUILDER: ${{ inputs.add-cross-builder }}
-        INPUT_RUN_BUILD_DEP: ${{ inputs.run-build-dep }}
       id: run
       run: ${{ github.action_path }}/scripts/run
       shell: bash

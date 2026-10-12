@@ -669,7 +669,7 @@ jobs:
           DEB_BUILD_OPTIONS: noautodbgsym
         with:
           docker-image: debian:wheezy-slim
-          buildpackage-opts: -rfakeroot -D -us -ui -uc -i -I -sa -j1
+          buildpackage-opts: -rfakeroot -D -us -uc -i -I -sa -j1
           source-dir: test
           clean-repos: true
           extra-repos: |

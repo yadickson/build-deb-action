@@ -3,7 +3,7 @@ name: Build Debian packages
 description: Build Debian packages with dpkg-buildpackage in a flexible environment.
 inputs:
   apt-opts:
-    default: --no-install-recommends --no-install-suggests
+    default: --sinstall-recommends --no-install-suggests
     description: Options to be passed to apt-get
     required: false
   artifacts-dir:

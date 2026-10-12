@@ -2,9 +2,8 @@ Source: test
 Section: unknown
 Priority: optional
 Maintainer: Jörn-Thorben Hinz <jtdor@users.noreply.github.com>
-Build-Depends: debhelper-compat (= 13) | debhelper (>= 9)
+Build-Depends: debhelper-compat (= 13) | debhelper (>= 8)
 Standards-Version: 4.5.0
-Rules-Requires-Root: no
 
 Package: test
 Architecture: any

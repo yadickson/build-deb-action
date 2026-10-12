@@ -631,7 +631,7 @@ jobs:
           debian-codename: jessie
           add-cross-builder: false
           run-build-dep: false
-          buildpackage-opts: --build=binary --no-sign
+          buildpackage-opts: -rfakeroot -D -us -uc -j1
           source-dir: test
       - run: |
           test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
@@ -651,7 +651,7 @@ jobs:
           debian-codename: wheezy
           add-cross-builder: false
           run-build-dep: false
-          buildpackage-opts: --build=binary --no-sign
+          buildpackage-opts: -rfakeroot -D -us -uc -j1
           source-dir: test
       - run: |
           test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1

@@ -7,3 +7,4 @@ test_1_*.build
 test_1_*.buildinfo
 test_1_*.changes
 test_1_*.deb
+.idea/

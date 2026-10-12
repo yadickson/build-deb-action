@@ -44,4 +44,4 @@ apt-get upgrade -y
 # build-dep` will *always* install build-essential which depends on dpkg-dev.
 # But let’s be explicit here.
 # shellcheck disable=SC2086
-apt-get install $INPUT_APT_OPTS -- pbuilder ccache devscripts fakeroot dpkg-dev libdpkg-perl $INPUT_EXTRA_BUILD_DEPS
+apt-get install $INPUT_APT_OPTS -- pbuilder ccache devscripts fakeroot lsb-release dpkg-dev libdpkg-perl $INPUT_EXTRA_BUILD_DEPS

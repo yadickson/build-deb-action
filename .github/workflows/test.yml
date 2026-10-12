@@ -10,635 +10,648 @@ on:
       - README.md
 
 jobs:
-#  apt-opts:
-#    needs: [single-package]
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: ./
-#        env:
-#          DEB_BUILD_OPTIONS: noautodbgsym
-#        with:
-#          apt-opts: --install-recommends --no-install-suggests
-#          buildpackage-opts: --build=binary --no-sign
-#          source-dir: test
-#      - run: |
-#          dpkg --info debian/artifacts/test_1_amd64.deb
-#          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
-#          test -f debian/artifacts/test_1_amd64.buildinfo
-#          test -f debian/artifacts/test_1_amd64.changes
-#
-#  before-build-hook:
-#    needs: [single-package]
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: ./
-#        env:
-#          DEB_BUILD_OPTIONS: noautodbgsym
-#        with:
-#          before-build-hook: |
-#            cd test
-#            dch --maintmaint --newversion 2 "Version 2"
-#            dch --maintmaint --release ""
-#          buildpackage-opts: --build=binary --no-sign
-#          extra-build-deps: devscripts
-#          source-dir: test
-#      - run: |
-#          dpkg --info debian/artifacts/test_2_amd64.deb
-#          dpkg --contents debian/artifacts/test_2_amd64.deb | grep ./usr/bin/mybin
-#          test -f debian/artifacts/test_2_amd64.buildinfo
-#          test -f debian/artifacts/test_2_amd64.changes
-#
-#  default-source-dir:
-#    needs: [single-package]
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - run: cp -r test/* .
-#      - uses: ./
-#        env:
-#          DEB_BUILD_OPTIONS: noautodbgsym
-#        with:
-#          buildpackage-opts: --build=binary --no-sign
-#      - run: |
-#          dpkg --info debian/artifacts/test_1_amd64.deb
-#          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
-#          test -f debian/artifacts/test_1_amd64.buildinfo
-#          test -f debian/artifacts/test_1_amd64.changes
-#
-#  different-artifacts-dir:
-#    needs: [single-package]
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: ./
-#        env:
-#          DEB_BUILD_OPTIONS: noautodbgsym
-#        with:
-#          artifacts-dir: my_artifacts
-#          buildpackage-opts: --build=binary --no-sign
-#          source-dir: test
-#      - run: |
-#          dpkg --info my_artifacts/test_1_amd64.deb
-#          dpkg --contents my_artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
-#          test -f my_artifacts/test_1_amd64.buildinfo
-#          test -f my_artifacts/test_1_amd64.changes
-#
-#  different-checkout-dir:
-#    needs: [single-package]
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#        with:
-#          path: action
-#      - uses: ./action
-#        env:
-#          DEB_BUILD_OPTIONS: noautodbgsym
-#        with:
-#          buildpackage-opts: --build=binary --no-sign
-#          source-dir: action/test
-#      - run: |
-#          dpkg --info debian/artifacts/test_1_amd64.deb
-#          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
-#          test -f debian/artifacts/test_1_amd64.buildinfo
-#          test -f debian/artifacts/test_1_amd64.changes
-#
-#  different-docker-image:
-#    needs: [single-package]
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: ./
-#        env:
-#          DEB_BUILD_OPTIONS: noautodbgsym
-#        with:
-#          buildpackage-opts: --build=binary --no-sign
-#          docker-image: ubuntu:latest
-#          source-dir: test
-#      - run: |
-#          dpkg --info debian/artifacts/test_1_amd64.deb
-#          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
-#          test -f debian/artifacts/test_1_amd64.buildinfo
-#          test -f debian/artifacts/test_1_amd64.changes
-#
-#  different-host-arch:
-#    needs: [single-package]
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: ./
-#        env:
-#          DEB_BUILD_OPTIONS: noautodbgsym
-#        with:
-#          buildpackage-opts: --build=binary --no-sign
-#          host-arch: i386
-#          source-dir: test
-#      - run: |
-#          dpkg --info debian/artifacts/test_1_i386.deb
-#          dpkg --contents debian/artifacts/test_1_i386.deb | grep ./usr/bin/mybin
-#          test -f debian/artifacts/test_1_i386.buildinfo
-#          test -f debian/artifacts/test_1_i386.changes
-#
-#  extra-build-deps:
-#    needs: [single-package]
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - run: cat test/Makefile_extra-build-deps >> test/Makefile
-#      - uses: ./
-#        env:
-#          DEB_BUILD_OPTIONS: noautodbgsym
-#        with:
-#          buildpackage-opts: --build=binary --no-sign
-#          # Install an extra package unlikely to be ever installed by default:
-#          extra-build-deps: libzt1
-#          source-dir: test
-#      - run: |
-#          dpkg --info debian/artifacts/test_1_amd64.deb
-#          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
-#          test -f debian/artifacts/test_1_amd64.buildinfo
-#          test -f debian/artifacts/test_1_amd64.changes
-#
-#  extra-docker-args:
-#    needs: [single-package]
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - run: cat test/Makefile_extra-docker-args >> test/Makefile
-#      - uses: ./
-#        env:
-#          DEB_BUILD_OPTIONS: noautodbgsym
-#        with:
-#          buildpackage-opts: --build=binary --no-sign
-#          source-dir: test
-#          extra-docker-args: --add-host extra-args-test:127.0.0.1
-#      - run: |
-#          dpkg --info debian/artifacts/test_1_amd64.deb
-#          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
-#          test -f debian/artifacts/test_1_amd64.buildinfo
-#          test -f debian/artifacts/test_1_amd64.changes
-#
-#  extra-repo-keys-ascii:
-#    needs: [single-package]
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - id: download-keys
-#        run: |
-#          docker run --detach --mount="type=bind,src=${{ github.workspace }},dst=/workspace" --name=download-cont --rm --workdir=/workspace debian:stable-slim tail -f /dev/null
-#          docker exec download-cont apt-get update
-#          docker exec --user="$(id -u):$(id -g)" download-cont apt-get download debian-archive-keyring
-#          docker stop --time=1 download-cont
-#          dpkg-deb --extract debian-archive-keyring_*.deb debian-archive-keyring
-#          {
-#            printf 'debian-archive-keys<<EOF\n'
-#            cat debian-archive-keyring/etc/apt/trusted.gpg.d/*.asc
-#            printf 'EOF\n'
-#          } >>"$GITHUB_OUTPUT"
-#      - uses: ./
-#        env:
-#          DEB_BUILD_OPTIONS: noautodbgsym
-#        with:
-#          buildpackage-opts: --build=binary --no-sign
-#          docker-image: test/Dockerfile_extra-repo-keys
-#          # An output value instead of an environment variable is used here to
-#          # not interfere with Docker’s environment down the line.
-#          extra-repo-keys: ${{ steps.download-keys.outputs.debian-archive-keys }}
-#          source-dir: test
-#      - run: |
-#          dpkg --info debian/artifacts/test_1_amd64.deb
-#          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
-#          test -f debian/artifacts/test_1_amd64.buildinfo
-#          test -f debian/artifacts/test_1_amd64.changes
-#
-#  extra-repo-keys-files:
-#    needs: [single-package]
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - id: download-keys
-#        run: |
-#          docker run --detach --mount="type=bind,src=${{ github.workspace }},dst=/workspace" --name=download-cont --rm --workdir=/workspace debian:stable-slim tail -f /dev/null
-#          docker exec download-cont apt-get update
-#          docker exec --user="$(id -u):$(id -g)" download-cont apt-get download debian-archive-keyring
-#          docker stop --time=1 download-cont
-#          dpkg-deb --extract debian-archive-keyring_*.deb debian-archive-keyring
-#          {
-#            printf 'debian-archive-keys<<EOF\n'
-#            ls -1 --directory debian-archive-keyring/etc/apt/trusted.gpg.d/*.asc
-#            printf 'EOF\n'
-#          } >>"$GITHUB_OUTPUT"
-#      - uses: ./
-#        env:
-#          DEB_BUILD_OPTIONS: noautodbgsym
-#        with:
-#          buildpackage-opts: --build=binary --no-sign
-#          docker-image: test/Dockerfile_extra-repo-keys
-#          # An output value instead of an environment variable is used here to
-#          # not interfere with Docker’s environment down the line.
-#          extra-repo-keys: ${{ steps.download-keys.outputs.debian-archive-keys }}
-#          source-dir: test
-#      - run: |
-#          dpkg --info debian/artifacts/test_1_amd64.deb
-#          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
-#          test -f debian/artifacts/test_1_amd64.buildinfo
-#          test -f debian/artifacts/test_1_amd64.changes
-#
-#  extra-repos:
-#    needs: [setup-hook]
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - run: cat test/Makefile_extra-repos >>test/Makefile
-#      - uses: ./
-#        env:
-#          DEB_BUILD_OPTIONS: noautodbgsym
-#        with:
-#          buildpackage-opts: --build=binary --no-sign
-#          extra-repos: |
-#            # These are intentionally given as two entries:
-#            deb http://deb.debian.org/debian stable contrib
-#            deb http://deb.debian.org/debian stable non-free
-#          setup-hook: |
-#            apt-get update # Called here manually only for testing purposes!
-#            ! apt-cache policy | grep -E ' *release.*[ ,]o=Debian[,$$]' | grep -E '[ ,]c=contrib[,$$]'
-#            ! apt-cache policy | grep -E ' *release.*[ ,]o=Debian[,$$]' | grep -E '[ ,]c=non-free[,$$]'
-#          source-dir: test
-#      - run: |
-#          dpkg --info debian/artifacts/test_1_amd64.deb
-#          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
-#          test -f debian/artifacts/test_1_amd64.buildinfo
-#          test -f debian/artifacts/test_1_amd64.changes
-#
-#  extra-repos-deb822:
-#    needs: [setup-hook]
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - run: cat test/Makefile_extra-repos >>test/Makefile
-#      - uses: ./
-#        env:
-#          DEB_BUILD_OPTIONS: noautodbgsym
-#        with:
-#          buildpackage-opts: --build=binary --no-sign
-#          extra-repos: |
-#            # These are intentionally given as two entries:
-#            Types: deb
-#            URIs: http://deb.debian.org/debian
-#            Suites: stable
-#            Components: contrib
-#
-#            Types: deb
-#            URIs: http://deb.debian.org/debian
-#            Suites: stable
-#            Components: non-free
-#          setup-hook: |
-#            apt-get update # Called here manually only for testing purposes!
-#            ! apt-cache policy | grep -E ' *release.*[ ,]o=Debian[,$$]' | grep -E '[ ,]c=contrib[,$$]'
-#            ! apt-cache policy | grep -E ' *release.*[ ,]o=Debian[,$$]' | grep -E '[ ,]c=non-free[,$$]'
-#          source-dir: test
-#      - run: |
-#          dpkg --info debian/artifacts/test_1_amd64.deb
-#          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
-#          test -f debian/artifacts/test_1_amd64.buildinfo
-#          test -f debian/artifacts/test_1_amd64.changes
-#
-#  full-build:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: ./
-#        env:
-#          DEB_BUILD_OPTIONS: noautodbgsym
-#        with:
-#          buildpackage-opts: --build=full --no-sign
-#          source-dir: test
-#      - run: |
-#          dpkg --info debian/artifacts/test_1_amd64.deb
-#          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
-#          test -f debian/artifacts/test_1.dsc
-#          test -f debian/artifacts/test_1.tar.xz
-#          test -f debian/artifacts/test_1_amd64.buildinfo
-#          test -f debian/artifacts/test_1_amd64.changes
-#
-#  git-as-root-in-hook:
-#    needs: [before-build-hook]
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: ./
-#        env:
-#          DEB_BUILD_OPTIONS: noautodbgsym
-#        with:
-#          before-build-hook: |
-#            cd test
-#            # Using `git rev-parse` here instead of github.sha to specifically
-#            # test the git usage.
-#            rev=$(git rev-parse HEAD)
-#            dch --maintmaint --newversion "1+$rev" "Version 1+$rev"
-#            dch --maintmaint --release ""
-#          buildpackage-opts: --build=binary --no-sign
-#          extra-build-deps: devscripts git
-#          source-dir: test
-#      - run: |
-#          dpkg --info debian/artifacts/test_1+${{ github.sha }}_amd64.deb
-#          dpkg --contents debian/artifacts/test_1+${{ github.sha }}_amd64.deb | grep ./usr/bin/mybin
-#          test -f debian/artifacts/test_1+${{ github.sha }}_amd64.buildinfo
-#          test -f debian/artifacts/test_1+${{ github.sha }}_amd64.changes
-#
-#  local-dockerfile:
-#    needs: [single-package]
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - run: cat test/Makefile_local-dockerfile >> test/Makefile
-#      - uses: ./
-#        env:
-#          DEB_BUILD_OPTIONS: noautodbgsym
-#        with:
-#          buildpackage-opts: --build=binary --no-sign
-#          docker-image: test/Dockerfile
-#          source-dir: test
-#      - run: |
-#          dpkg --info debian/artifacts/test_1_amd64.deb
-#          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
-#          test -f debian/artifacts/test_1_amd64.buildinfo
-#          test -f debian/artifacts/test_1_amd64.changes
-#
-#  multiple-packages:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: ./
-#        with:
-#          buildpackage-opts: --build=binary --no-sign
-#          source-dir: test
-#      - run: |
-#          dpkg --info debian/artifacts/test_1_amd64.deb
-#          dpkg --info debian/artifacts/test-dbgsym_1_amd64.deb
-#          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
-#          dpkg --contents debian/artifacts/test-dbgsym_1_amd64.deb
-#          test -f debian/artifacts/test_1_amd64.buildinfo
-#          test -f debian/artifacts/test_1_amd64.changes
-#
-#  # Regression test following issue #3 (“Did not find the .buildinfo file in
-#  # debian/files”)
-#  non-trivial-package-version:
-#    needs: [single-package]
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - run: |
-#          sed -i '1 s/\(1\)/4.3.2-1+final~42-5.deb+long~version/' test/debian/changelog
-#          sed -i 's/native/quilt/' test/debian/source/format
-#      - uses: ./
-#        env:
-#          DEB_BUILD_OPTIONS: noautodbgsym
-#        with:
-#          buildpackage-opts: --build=binary --no-sign
-#          source-dir: test
-#      - run: |
-#          dpkg --info debian/artifacts/test_4.3.2-1+final~42-5.deb+long~version_amd64.deb
-#          dpkg --contents debian/artifacts/test_4.3.2-1+final~42-5.deb+long~version_amd64.deb | grep ./usr/bin/mybin
-#          test -f debian/artifacts/test_4.3.2-1+final~42-5.deb+long~version_amd64.buildinfo
-#          test -f debian/artifacts/test_4.3.2-1+final~42-5.deb+long~version_amd64.changes
-#
-#  not-moving-artifacts:
-#    needs: [single-package]
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: ./
-#        env:
-#          DEB_BUILD_OPTIONS: noautodbgsym
-#        with:
-#          artifacts-dir: .
-#          buildpackage-opts: --build=binary --no-sign
-#          source-dir: test
-#      - run: |
-#          dpkg --info test_1_amd64.deb
-#          dpkg --contents test_1_amd64.deb | grep ./usr/bin/mybin
-#          test -f test_1_amd64.buildinfo
-#          test -f test_1_amd64.changes
-#
-#  outputs-artifacts:
-#    needs: [single-package]
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: ./
-#        env:
-#          DEB_BUILD_OPTIONS: noautodbgsym
-#        id: build
-#        with:
-#          buildpackage-opts: --build=binary --no-sign
-#          source-dir: test
-#      - run: |
-#          dpkg --info debian/artifacts/test_1_amd64.deb
-#          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
-#          test -f debian/artifacts/test_1_amd64.buildinfo
-#          test -f debian/artifacts/test_1_amd64.changes
-#          printf "${{ steps.build.outputs.artifacts }}" | grep -x debian/artifacts/test_1_amd64.buildinfo
-#          printf "${{ steps.build.outputs.artifacts }}" | grep -x debian/artifacts/test_1_amd64.changes
-#          printf "${{ steps.build.outputs.artifacts }}" | grep -x debian/artifacts/test_1_amd64.deb
-#          test "$(printf '%s\n' "${{ steps.build.outputs.artifacts }}" | wc -l)" -eq 3
-#
-#  probe-env:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: ./
-#        continue-on-error: true
-#        id: build-deb
-#        with:
-#          docker-image: alpine:latest
-#      - run: |
-#          test "${{ steps.build-deb.outcome }}" = 'failure'
-#
-#  setup-hook:
-#    needs: [single-package]
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - run: cat test/Makefile_setup-hook >>test/Makefile
-#      - uses: ./
-#        env:
-#          DEB_BUILD_OPTIONS: noautodbgsym
-#        with:
-#          setup-hook: |
-#            cat <<EOF >/etc/apt/preferences
-#            Package: *
-#            Pin: release o=Debian
-#            Pin-Priority: 666
-#            EOF
-#          buildpackage-opts: --build=binary --no-sign
-#          source-dir: test
-#      - run: |
-#          dpkg --info debian/artifacts/test_1_amd64.deb
-#          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
-#          test -f debian/artifacts/test_1_amd64.buildinfo
-#          test -f debian/artifacts/test_1_amd64.changes
-#
-#  single-package:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: ./
-#        env:
-#          DEB_BUILD_OPTIONS: noautodbgsym
-#        with:
-#          buildpackage-opts: --build=binary --no-sign
-#          source-dir: test
-#      - run: |
-#          test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
-#          dpkg --info debian/artifacts/test_1_amd64.deb
-#          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
-#          test -f debian/artifacts/test_1_amd64.buildinfo
-#          test -f debian/artifacts/test_1_amd64.changes
-#
-#  source-package:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: ./
-#        with:
-#          buildpackage-opts: --build=source --no-sign
-#          source-dir: test
-#      - run: |
-#          ! ls -1 debian/artifacts/*.deb 2>/dev/null
-#          test -f debian/artifacts/test_1.dsc
-#          test -f debian/artifacts/test_1.tar.xz
-#          test -f debian/artifacts/test_1_source.buildinfo
-#          test -f debian/artifacts/test_1_source.changes
-#
-#  debian-codename-forky-package:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: ./
-#        env:
-#          DEB_BUILD_OPTIONS: noautodbgsym
-#        with:
-#          debian-codename: forky
-#          buildpackage-opts: --build=binary --no-sign
-#          source-dir: test
-#      - run: |
-#          test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
-#          dpkg --info debian/artifacts/test_1_amd64.deb
-#          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
-#          test -f debian/artifacts/test_1_amd64.buildinfo
-#          test -f debian/artifacts/test_1_amd64.changes
-#
-#  debian-codename-trixie-package:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: ./
-#        env:
-#          DEB_BUILD_OPTIONS: noautodbgsym
-#        with:
-#          debian-codename: trixie
-#          buildpackage-opts: --build=binary --no-sign
-#          source-dir: test
-#      - run: |
-#          test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
-#          dpkg --info debian/artifacts/test_1_amd64.deb
-#          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
-#          test -f debian/artifacts/test_1_amd64.buildinfo
-#          test -f debian/artifacts/test_1_amd64.changes
-#
-#  debian-codename-bookworm-package:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: ./
-#        env:
-#          DEB_BUILD_OPTIONS: noautodbgsym
-#        with:
-#          debian-codename: bookworm
-#          buildpackage-opts: --build=binary --no-sign
-#          source-dir: test
-#      - run: |
-#          test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
-#          dpkg --info debian/artifacts/test_1_amd64.deb
-#          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
-#          test -f debian/artifacts/test_1_amd64.buildinfo
-#          test -f debian/artifacts/test_1_amd64.changes
-#
-#  debian-codename-bullseye-package:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: ./
-#        env:
-#          DEB_BUILD_OPTIONS: noautodbgsym
-#        with:
-#          debian-codename: bullseye
-#          buildpackage-opts: --build=binary --no-sign
-#          source-dir: test
-#      - run: |
-#          test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
-#          dpkg --info debian/artifacts/test_1_amd64.deb
-#          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
-#          test -f debian/artifacts/test_1_amd64.buildinfo
-#          test -f debian/artifacts/test_1_amd64.changes
-#
-#  debian-codename-buster-package:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: ./
-#        env:
-#          DEB_BUILD_OPTIONS: noautodbgsym
-#        with:
-#          debian-codename: buster
-#          buildpackage-opts: --build=binary --no-sign
-#          source-dir: test
-#      - run: |
-#          test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
-#          dpkg --info debian/artifacts/test_1_amd64.deb
-#          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
-#          test -f debian/artifacts/test_1_amd64.buildinfo
-#          test -f debian/artifacts/test_1_amd64.changes
-#
-#  debian-codename-stretch-package:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: ./
-#        env:
-#          DEB_BUILD_OPTIONS: noautodbgsym
-#        with:
-#          debian-codename: stretch
-#          buildpackage-opts: --build=binary --no-sign
-#          source-dir: test
-#      - run: |
-#          test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
-#          dpkg --info debian/artifacts/test_1_amd64.deb
-#          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
-#          test -f debian/artifacts/test_1_amd64.buildinfo
-#          test -f debian/artifacts/test_1_amd64.changes
-#
-#  debian-codename-jessie-package:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: ./
-#        env:
-#          DEB_BUILD_OPTIONS: noautodbgsym
-#        with:
-#          debian-codename: jessie
-#          add-cross-builder: false
-#          run-build-dep: false
-#          buildpackage-opts: -rfakeroot -D -us -uc -j1
-#          source-dir: test
-#      - run: |
-#          test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
-#          dpkg --info debian/artifacts/test_1_amd64.deb
-#          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
-#          test -f debian/artifacts/test_1_amd64.buildinfo
-#          test -f debian/artifacts/test_1_amd64.changes
+  apt-opts:
+    needs: [single-package]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          apt-opts: --install-recommends --no-install-suggests
+          buildpackage-opts: --build=binary --no-sign
+          source-dir: test
+      - run: |
+          dpkg --info debian/artifacts/test_1_amd64.deb
+          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
+          test -f debian/artifacts/test_1_amd64.buildinfo
+          test -f debian/artifacts/test_1_amd64.changes
+
+  before-build-hook:
+    needs: [single-package]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          before-build-hook: |
+            cd test
+            dch --maintmaint --newversion 2 "Version 2"
+            dch --maintmaint --release ""
+          buildpackage-opts: --build=binary --no-sign
+          extra-build-deps: devscripts
+          source-dir: test
+      - run: |
+          dpkg --info debian/artifacts/test_2_amd64.deb
+          dpkg --contents debian/artifacts/test_2_amd64.deb | grep ./usr/bin/mybin
+          test -f debian/artifacts/test_2_amd64.buildinfo
+          test -f debian/artifacts/test_2_amd64.changes
+
+  default-source-dir:
+    needs: [single-package]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cp -r test/* .
+      - uses: ./
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          buildpackage-opts: --build=binary --no-sign
+      - run: |
+          dpkg --info debian/artifacts/test_1_amd64.deb
+          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
+          test -f debian/artifacts/test_1_amd64.buildinfo
+          test -f debian/artifacts/test_1_amd64.changes
+
+  different-artifacts-dir:
+    needs: [single-package]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          artifacts-dir: my_artifacts
+          buildpackage-opts: --build=binary --no-sign
+          source-dir: test
+      - run: |
+          dpkg --info my_artifacts/test_1_amd64.deb
+          dpkg --contents my_artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
+          test -f my_artifacts/test_1_amd64.buildinfo
+          test -f my_artifacts/test_1_amd64.changes
+
+  different-checkout-dir:
+    needs: [single-package]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: action
+      - uses: ./action
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          buildpackage-opts: --build=binary --no-sign
+          source-dir: action/test
+      - run: |
+          dpkg --info debian/artifacts/test_1_amd64.deb
+          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
+          test -f debian/artifacts/test_1_amd64.buildinfo
+          test -f debian/artifacts/test_1_amd64.changes
+
+  different-docker-image:
+    needs: [single-package]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          buildpackage-opts: --build=binary --no-sign
+          docker-image: ubuntu:latest
+          source-dir: test
+      - run: |
+          dpkg --info debian/artifacts/test_1_amd64.deb
+          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
+          test -f debian/artifacts/test_1_amd64.buildinfo
+          test -f debian/artifacts/test_1_amd64.changes
+
+  different-host-arch:
+    needs: [single-package]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          buildpackage-opts: --build=binary --no-sign
+          host-arch: i386
+          source-dir: test
+      - run: |
+          dpkg --info debian/artifacts/test_1_i386.deb
+          dpkg --contents debian/artifacts/test_1_i386.deb | grep ./usr/bin/mybin
+          test -f debian/artifacts/test_1_i386.buildinfo
+          test -f debian/artifacts/test_1_i386.changes
+
+  extra-build-deps:
+    needs: [single-package]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cat test/Makefile_extra-build-deps >> test/Makefile
+      - uses: ./
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          buildpackage-opts: --build=binary --no-sign
+          # Install an extra package unlikely to be ever installed by default:
+          extra-build-deps: libzt1
+          source-dir: test
+      - run: |
+          dpkg --info debian/artifacts/test_1_amd64.deb
+          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
+          test -f debian/artifacts/test_1_amd64.buildinfo
+          test -f debian/artifacts/test_1_amd64.changes
+
+  extra-docker-args:
+    needs: [single-package]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cat test/Makefile_extra-docker-args >> test/Makefile
+      - uses: ./
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          buildpackage-opts: --build=binary --no-sign
+          source-dir: test
+          extra-docker-args: --add-host extra-args-test:127.0.0.1
+      - run: |
+          dpkg --info debian/artifacts/test_1_amd64.deb
+          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
+          test -f debian/artifacts/test_1_amd64.buildinfo
+          test -f debian/artifacts/test_1_amd64.changes
+
+  extra-repo-keys-ascii:
+    needs: [single-package]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - id: download-keys
+        run: |
+          docker run --detach --mount="type=bind,src=${{ github.workspace }},dst=/workspace" --name=download-cont --rm --workdir=/workspace debian:stable-slim tail -f /dev/null
+          docker exec download-cont apt-get update
+          docker exec --user="$(id -u):$(id -g)" download-cont apt-get download debian-archive-keyring
+          docker stop --time=1 download-cont
+          dpkg-deb --extract debian-archive-keyring_*.deb debian-archive-keyring
+          {
+            printf 'debian-archive-keys<<EOF\n'
+            cat debian-archive-keyring/etc/apt/trusted.gpg.d/*.asc
+            printf 'EOF\n'
+          } >>"$GITHUB_OUTPUT"
+      - uses: ./
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          buildpackage-opts: --build=binary --no-sign
+          docker-image: test/Dockerfile_extra-repo-keys
+          # An output value instead of an environment variable is used here to
+          # not interfere with Docker’s environment down the line.
+          extra-repo-keys: ${{ steps.download-keys.outputs.debian-archive-keys }}
+          source-dir: test
+      - run: |
+          dpkg --info debian/artifacts/test_1_amd64.deb
+          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
+          test -f debian/artifacts/test_1_amd64.buildinfo
+          test -f debian/artifacts/test_1_amd64.changes
+
+  extra-repo-keys-files:
+    needs: [single-package]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - id: download-keys
+        run: |
+          docker run --detach --mount="type=bind,src=${{ github.workspace }},dst=/workspace" --name=download-cont --rm --workdir=/workspace debian:stable-slim tail -f /dev/null
+          docker exec download-cont apt-get update
+          docker exec --user="$(id -u):$(id -g)" download-cont apt-get download debian-archive-keyring
+          docker stop --time=1 download-cont
+          dpkg-deb --extract debian-archive-keyring_*.deb debian-archive-keyring
+          {
+            printf 'debian-archive-keys<<EOF\n'
+            ls -1 --directory debian-archive-keyring/etc/apt/trusted.gpg.d/*.asc
+            printf 'EOF\n'
+          } >>"$GITHUB_OUTPUT"
+      - uses: ./
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          buildpackage-opts: --build=binary --no-sign
+          docker-image: test/Dockerfile_extra-repo-keys
+          # An output value instead of an environment variable is used here to
+          # not interfere with Docker’s environment down the line.
+          extra-repo-keys: ${{ steps.download-keys.outputs.debian-archive-keys }}
+          source-dir: test
+      - run: |
+          dpkg --info debian/artifacts/test_1_amd64.deb
+          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
+          test -f debian/artifacts/test_1_amd64.buildinfo
+          test -f debian/artifacts/test_1_amd64.changes
+
+  extra-repos:
+    needs: [setup-hook]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cat test/Makefile_extra-repos >>test/Makefile
+      - uses: ./
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          buildpackage-opts: --build=binary --no-sign
+          extra-repos: |
+            # These are intentionally given as two entries:
+            deb http://deb.debian.org/debian stable contrib
+            deb http://deb.debian.org/debian stable non-free
+          setup-hook: |
+            apt-get update # Called here manually only for testing purposes!
+            ! apt-cache policy | grep -E ' *release.*[ ,]o=Debian[,$$]' | grep -E '[ ,]c=contrib[,$$]'
+            ! apt-cache policy | grep -E ' *release.*[ ,]o=Debian[,$$]' | grep -E '[ ,]c=non-free[,$$]'
+          source-dir: test
+      - run: |
+          dpkg --info debian/artifacts/test_1_amd64.deb
+          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
+          test -f debian/artifacts/test_1_amd64.buildinfo
+          test -f debian/artifacts/test_1_amd64.changes
+
+  extra-repos-deb822:
+    needs: [setup-hook]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cat test/Makefile_extra-repos >>test/Makefile
+      - uses: ./
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          buildpackage-opts: --build=binary --no-sign
+          extra-repos: |
+            # These are intentionally given as two entries:
+            Types: deb
+            URIs: http://deb.debian.org/debian
+            Suites: stable
+            Components: contrib
+
+            Types: deb
+            URIs: http://deb.debian.org/debian
+            Suites: stable
+            Components: non-free
+          setup-hook: |
+            apt-get update # Called here manually only for testing purposes!
+            ! apt-cache policy | grep -E ' *release.*[ ,]o=Debian[,$$]' | grep -E '[ ,]c=contrib[,$$]'
+            ! apt-cache policy | grep -E ' *release.*[ ,]o=Debian[,$$]' | grep -E '[ ,]c=non-free[,$$]'
+          source-dir: test
+      - run: |
+          dpkg --info debian/artifacts/test_1_amd64.deb
+          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
+          test -f debian/artifacts/test_1_amd64.buildinfo
+          test -f debian/artifacts/test_1_amd64.changes
+
+  full-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          buildpackage-opts: --build=full --no-sign
+          source-dir: test
+      - run: |
+          dpkg --info debian/artifacts/test_1_amd64.deb
+          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
+          test -f debian/artifacts/test_1.dsc
+          test -f debian/artifacts/test_1.tar.xz
+          test -f debian/artifacts/test_1_amd64.buildinfo
+          test -f debian/artifacts/test_1_amd64.changes
+
+  git-as-root-in-hook:
+    needs: [before-build-hook]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          before-build-hook: |
+            cd test
+            # Using `git rev-parse` here instead of github.sha to specifically
+            # test the git usage.
+            rev=$(git rev-parse HEAD)
+            dch --maintmaint --newversion "1+$rev" "Version 1+$rev"
+            dch --maintmaint --release ""
+          buildpackage-opts: --build=binary --no-sign
+          extra-build-deps: devscripts git
+          source-dir: test
+      - run: |
+          dpkg --info debian/artifacts/test_1+${{ github.sha }}_amd64.deb
+          dpkg --contents debian/artifacts/test_1+${{ github.sha }}_amd64.deb | grep ./usr/bin/mybin
+          test -f debian/artifacts/test_1+${{ github.sha }}_amd64.buildinfo
+          test -f debian/artifacts/test_1+${{ github.sha }}_amd64.changes
+
+  local-dockerfile:
+    needs: [single-package]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cat test/Makefile_local-dockerfile >> test/Makefile
+      - uses: ./
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          buildpackage-opts: --build=binary --no-sign
+          docker-image: test/Dockerfile
+          source-dir: test
+      - run: |
+          dpkg --info debian/artifacts/test_1_amd64.deb
+          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
+          test -f debian/artifacts/test_1_amd64.buildinfo
+          test -f debian/artifacts/test_1_amd64.changes
+
+  multiple-packages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        with:
+          buildpackage-opts: --build=binary --no-sign
+          source-dir: test
+      - run: |
+          dpkg --info debian/artifacts/test_1_amd64.deb
+          dpkg --info debian/artifacts/test-dbgsym_1_amd64.deb
+          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
+          dpkg --contents debian/artifacts/test-dbgsym_1_amd64.deb
+          test -f debian/artifacts/test_1_amd64.buildinfo
+          test -f debian/artifacts/test_1_amd64.changes
+
+  # Regression test following issue #3 (“Did not find the .buildinfo file in
+  # debian/files”)
+  non-trivial-package-version:
+    needs: [single-package]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          sed -i '1 s/\(1\)/4.3.2-1+final~42-5.deb+long~version/' test/debian/changelog
+          sed -i 's/native/quilt/' test/debian/source/format
+      - uses: ./
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          buildpackage-opts: --build=binary --no-sign
+          source-dir: test
+      - run: |
+          dpkg --info debian/artifacts/test_4.3.2-1+final~42-5.deb+long~version_amd64.deb
+          dpkg --contents debian/artifacts/test_4.3.2-1+final~42-5.deb+long~version_amd64.deb | grep ./usr/bin/mybin
+          test -f debian/artifacts/test_4.3.2-1+final~42-5.deb+long~version_amd64.buildinfo
+          test -f debian/artifacts/test_4.3.2-1+final~42-5.deb+long~version_amd64.changes
+
+  not-moving-artifacts:
+    needs: [single-package]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          artifacts-dir: .
+          buildpackage-opts: --build=binary --no-sign
+          source-dir: test
+      - run: |
+          dpkg --info test_1_amd64.deb
+          dpkg --contents test_1_amd64.deb | grep ./usr/bin/mybin
+          test -f test_1_amd64.buildinfo
+          test -f test_1_amd64.changes
+
+  outputs-artifacts:
+    needs: [single-package]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        id: build
+        with:
+          buildpackage-opts: --build=binary --no-sign
+          source-dir: test
+      - run: |
+          dpkg --info debian/artifacts/test_1_amd64.deb
+          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
+          test -f debian/artifacts/test_1_amd64.buildinfo
+          test -f debian/artifacts/test_1_amd64.changes
+          printf "${{ steps.build.outputs.artifacts }}" | grep -x debian/artifacts/test_1_amd64.buildinfo
+          printf "${{ steps.build.outputs.artifacts }}" | grep -x debian/artifacts/test_1_amd64.changes
+          printf "${{ steps.build.outputs.artifacts }}" | grep -x debian/artifacts/test_1_amd64.deb
+          test "$(printf '%s\n' "${{ steps.build.outputs.artifacts }}" | wc -l)" -eq 3
+
+  probe-env:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        continue-on-error: true
+        id: build-deb
+        with:
+          docker-image: alpine:latest
+      - run: |
+          test "${{ steps.build-deb.outcome }}" = 'failure'
+
+  setup-hook:
+    needs: [single-package]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cat test/Makefile_setup-hook >>test/Makefile
+      - uses: ./
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          setup-hook: |
+            cat <<EOF >/etc/apt/preferences
+            Package: *
+            Pin: release o=Debian
+            Pin-Priority: 666
+            EOF
+          buildpackage-opts: --build=binary --no-sign
+          source-dir: test
+      - run: |
+          dpkg --info debian/artifacts/test_1_amd64.deb
+          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
+          test -f debian/artifacts/test_1_amd64.buildinfo
+          test -f debian/artifacts/test_1_amd64.changes
+
+  single-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          buildpackage-opts: --build=binary --no-sign
+          source-dir: test
+      - run: |
+          test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
+          dpkg --info debian/artifacts/test_1_amd64.deb
+          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
+          test -f debian/artifacts/test_1_amd64.buildinfo
+          test -f debian/artifacts/test_1_amd64.changes
+
+  source-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        with:
+          buildpackage-opts: --build=source --no-sign
+          source-dir: test
+      - run: |
+          ! ls -1 debian/artifacts/*.deb 2>/dev/null
+          test -f debian/artifacts/test_1.dsc
+          test -f debian/artifacts/test_1.tar.xz
+          test -f debian/artifacts/test_1_source.buildinfo
+          test -f debian/artifacts/test_1_source.changes
+
+  debian-codename-forky-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          debian-codename: forky
+          buildpackage-opts: --build=binary --no-sign
+          source-dir: test
+      - run: |
+          ls -ls debian/artifacts
+      - run: |
+          test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
+          dpkg --info debian/artifacts/test_1_amd64.deb
+          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
+          test -f debian/artifacts/test_1_amd64.buildinfo
+          test -f debian/artifacts/test_1_amd64.changes
+
+  debian-codename-trixie-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          debian-codename: trixie
+          buildpackage-opts: --build=binary --no-sign
+          source-dir: test
+      - run: |
+          ls -ls debian/artifacts
+      - run: |
+          test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
+          dpkg --info debian/artifacts/test_1_amd64.deb
+          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
+          test -f debian/artifacts/test_1_amd64.buildinfo
+          test -f debian/artifacts/test_1_amd64.changes
+
+  debian-codename-bookworm-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          debian-codename: bookworm
+          buildpackage-opts: --build=binary --no-sign
+          source-dir: test
+      - run: |
+          test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
+          dpkg --info debian/artifacts/test_1_amd64.deb
+          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
+          test -f debian/artifacts/test_1_amd64.buildinfo
+          test -f debian/artifacts/test_1_amd64.changes
+
+  debian-codename-bullseye-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          debian-codename: bullseye
+          buildpackage-opts: --build=binary --no-sign
+          source-dir: test
+      - run: |
+          ls -ls debian/artifacts
+      - run: |
+          test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
+          dpkg --info debian/artifacts/test_1_amd64.deb
+          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
+          test -f debian/artifacts/test_1_amd64.buildinfo
+          test -f debian/artifacts/test_1_amd64.changes
+
+  debian-codename-buster-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          debian-codename: buster
+          buildpackage-opts: --build=binary --no-sign
+          source-dir: test
+      - run: |
+          ls -ls debian/artifacts
+      - run: |
+          test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
+          dpkg --info debian/artifacts/test_1_amd64.deb
+          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
+          test -f debian/artifacts/test_1_amd64.buildinfo
+          test -f debian/artifacts/test_1_amd64.changes
+
+  debian-codename-stretch-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          debian-codename: stretch
+          add-cross-builder: false
+          buildpackage-opts: --build=binary --no-sign
+          source-dir: test
+      - run: |
+          ls -ls debian/artifacts
+      - run: |
+          test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
+          dpkg --info debian/artifacts/test_1_amd64.deb
+          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
+          test -f debian/artifacts/test_1_amd64.buildinfo
+          test -f debian/artifacts/test_1_amd64.changes
+
+  debian-codename-jessie-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          debian-codename: jessie
+          add-cross-builder: false
+          run-build-dep: false
+          buildpackage-opts: -rfakeroot -D -us -uc -j1
+          source-dir: test
+      - run: |
+          ls -ls debian/artifacts
+      - run: |
+          test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
+          dpkg --info debian/artifacts/test_1_amd64.deb
+          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
+          test -f debian/artifacts/test_1_amd64.buildinfo
+          test -f debian/artifacts/test_1_amd64.changes
 
   debian-codename-wheezy-package:
     runs-on: ubuntu-latest
@@ -650,7 +663,7 @@ jobs:
         with:
           debian-codename: wheezy
           add-cross-builder: false
-          run-build-dep: true
+          run-build-dep: false
           buildpackage-opts: -rfakeroot -D -us -uc -j1
           source-dir: test
       - run: |

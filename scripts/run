@@ -93,7 +93,7 @@ if [ -f "$INPUT_DOCKER_IMAGE" ]; then
 	read -r INPUT_DOCKER_IMAGE <"$image_id_file" || :
 	end_group
 
-  if [ "$INPUT_RM_DOCKER_IMAGE" == "true" ]; then
+  if [ "$INPUT_RM_DOCKER_IMAGE" == true ]; then
 	  rm -f "$GITHUB_WORKSPACE/$INPUT_DOCKER_IMAGE"
 	fi
 fi

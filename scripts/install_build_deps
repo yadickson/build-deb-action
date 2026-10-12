@@ -46,3 +46,5 @@ apt-get install $INPUT_APT_OPTS -- devscripts equivs dpkg-dev libdpkg-perl $INPU
 # shellcheck disable=SC2086
 cd -- "$INPUT_SOURCE_DIR"
 apt-get build-dep $INPUT_APT_OPTS . || mk-build-deps --install --remove debian/control
+
+rm -rf *.deb

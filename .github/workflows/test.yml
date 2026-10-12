@@ -511,3 +511,151 @@ jobs:
           test -f debian/artifacts/test_1.tar.xz
           test -f debian/artifacts/test_1_source.buildinfo
           test -f debian/artifacts/test_1_source.changes
+
+  debian-codename-forky-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          debian-codename: forky
+          buildpackage-opts: --build=binary --no-sign
+          source-dir: test
+      - run: |
+          test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
+          dpkg --info debian/artifacts/test_1_amd64.deb
+          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
+          test -f debian/artifacts/test_1_amd64.buildinfo
+          test -f debian/artifacts/test_1_amd64.changes
+
+  debian-codename-trixie-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          debian-codename: trixie
+          buildpackage-opts: --build=binary --no-sign
+          source-dir: test
+      - run: |
+          test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
+          dpkg --info debian/artifacts/test_1_amd64.deb
+          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
+          test -f debian/artifacts/test_1_amd64.buildinfo
+          test -f debian/artifacts/test_1_amd64.changes
+
+  debian-codename-bookworm-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          debian-codename: bookworm
+          buildpackage-opts: --build=binary --no-sign
+          source-dir: test
+      - run: |
+          test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
+          dpkg --info debian/artifacts/test_1_amd64.deb
+          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
+          test -f debian/artifacts/test_1_amd64.buildinfo
+          test -f debian/artifacts/test_1_amd64.changes
+
+  debian-codename-bullseye-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          debian-codename: bullseye
+          buildpackage-opts: --build=binary --no-sign
+          source-dir: test
+      - run: |
+          test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
+          dpkg --info debian/artifacts/test_1_amd64.deb
+          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
+          test -f debian/artifacts/test_1_amd64.buildinfo
+          test -f debian/artifacts/test_1_amd64.changes
+
+  debian-codename-buster-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          debian-codename: buster
+          buildpackage-opts: --build=binary --no-sign
+          source-dir: test
+      - run: |
+          test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
+          dpkg --info debian/artifacts/test_1_amd64.deb
+          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
+          test -f debian/artifacts/test_1_amd64.buildinfo
+          test -f debian/artifacts/test_1_amd64.changes
+
+  debian-codename-stretch-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          debian-codename: stretch
+          buildpackage-opts: --build=binary --no-sign
+          source-dir: test
+      - run: |
+          test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
+          dpkg --info debian/artifacts/test_1_amd64.deb
+          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
+          test -f debian/artifacts/test_1_amd64.buildinfo
+          test -f debian/artifacts/test_1_amd64.changes
+
+  debian-codename-jessie-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          debian-codename: jessie
+          add-cross-builder: false
+          run-build-dep: false
+          buildpackage-opts: --build=binary --no-sign
+          source-dir: test
+      - run: |
+          test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
+          dpkg --info debian/artifacts/test_1_amd64.deb
+          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
+          test -f debian/artifacts/test_1_amd64.buildinfo
+          test -f debian/artifacts/test_1_amd64.changes
+
+  debian-codename-wheezy-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          debian-codename: wheezy
+          add-cross-builder: false
+          run-build-dep: false
+          buildpackage-opts: --build=binary --no-sign
+          source-dir: test
+      - run: |
+          test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
+          dpkg --info debian/artifacts/test_1_amd64.deb
+          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
+          test -f debian/artifacts/test_1_amd64.buildinfo
+          test -f debian/artifacts/test_1_amd64.changes

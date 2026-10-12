@@ -16,7 +16,10 @@ EOF
 # Adapted from pbuilder's and sbuild's support for cross-building:
 if [ -n "$INPUT_HOST_ARCH" ]; then
 	dpkg --add-architecture "$INPUT_HOST_ARCH"
-	INPUT_EXTRA_BUILD_DEPS="$INPUT_EXTRA_BUILD_DEPS crossbuild-essential-$INPUT_HOST_ARCH libc-dev:$INPUT_HOST_ARCH"
+	if [ "${INPUT_ADD_CROSS_BUILDER}" ]; then
+  	INPUT_EXTRA_BUILD_DEPS="$INPUT_EXTRA_BUILD_DEPS crossbuild-essential-$INPUT_HOST_ARCH"
+	fi
+	INPUT_EXTRA_BUILD_DEPS="$INPUT_EXTRA_BUILD_DEPS libc-dev:$INPUT_HOST_ARCH"
 	printf 'APT::Get::Host-Architecture "%s";\n' "$INPUT_HOST_ARCH" >>"$APT_CONF_FILE"
 fi
 
@@ -36,8 +39,10 @@ fi
 
 apt-get update
 
+if [ -n "${INPUT_RUN_BUILD_DEP}" ]; then
 # shellcheck disable=SC2086
-apt-get build-dep $INPUT_APT_OPTS -- "./$INPUT_SOURCE_DIR"
+  apt-get build-dep $INPUT_APT_OPTS -- "./$INPUT_SOURCE_DIR"
+fi
 
 # In theory, explicitly installing dpkg-dev would not be necessary. `apt-get
 # build-dep` will *always* install build-essential which depends on dpkg-dev.

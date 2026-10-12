@@ -94,7 +94,7 @@ if [ -f "$INPUT_DOCKER_IMAGE" ]; then
 	end_group
 
   if [ "$INPUT_RM_DOCKER_IMAGE" = "true" ]; then
-	  rm -f "$GITHUB_WORKSPACE/$INPUT_DOCKER_IMAGE"
+	  rm -f "$INPUT_DOCKER_IMAGE"
 	fi
 fi
 

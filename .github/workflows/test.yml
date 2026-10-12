@@ -680,7 +680,7 @@ jobs:
         with:
           debian-codename: wheezy
           add-cross-builder: false
-          run-build-dep: false
+          run-build-dep: true
           buildpackage-opts: -rfakeroot -D -us -uc -j1
           source-dir: test
       - run: |

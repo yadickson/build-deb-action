@@ -1,5 +1,5 @@
 Source: test
-Section: unknown
+Section: utils
 Priority: optional
 Maintainer: Jörn-Thorben Hinz <jtdor@users.noreply.github.com>
 Build-Depends: debhelper-compat (= 13)
@@ -9,4 +9,5 @@ Rules-Requires-Root: no
 Package: test
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: Test package
+Description: This is a test package
+ Only for test action to build packages

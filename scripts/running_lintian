@@ -6,4 +6,5 @@ cd -- "${INPUT_SOURCE_DIR}"
 
 version=$(dpkg-parsechangelog --show-field Version)
 
+# shellcheck disable=SC2086
 find ".." -maxdepth 1 -name "*${version}*.changes" -type f -print -exec lintian ${INPUT_LINTIAN_OPTS} '{}' \+

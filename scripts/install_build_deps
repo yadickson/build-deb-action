@@ -63,8 +63,8 @@ apt-get upgrade -y
 # shellcheck disable=SC2086
 apt-get install ${INPUT_APT_OPTS} -- devscripts equivs dpkg-dev debhelper lintian tar ${INPUT_EXTRA_BUILD_DEPS}
 
-# shellcheck disable=SC2086
 cd -- "${INPUT_SOURCE_DIR}"
+# shellcheck disable=SC2086
 apt-get build-dep ${INPUT_APT_OPTS} . || mk-build-deps --install --remove debian/control
 
 rm -rf "*.deb"

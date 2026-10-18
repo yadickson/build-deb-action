@@ -8,4 +8,4 @@ version=$(dpkg-parsechangelog --show-field Version)
 
 mkdir -p "${GITHUB_WORKSPACE}/${INPUT_ARTIFACTS_DIR}"
 
-find "." -maxdepth 1 -name "*${version}*.*" -type f -print -exec mv '{}' "${GITHUB_WORKSPACE}/${INPUT_ARTIFACTS_DIR}/" \;
+find ".." -maxdepth 1 -name "*${version}*.*" -type f -print -exec mv '{}' "${GITHUB_WORKSPACE}/${INPUT_ARTIFACTS_DIR}/" \;

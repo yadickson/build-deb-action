@@ -6,4 +6,4 @@ cd -- "${INPUT_SOURCE_DIR}"
 
 version=$(dpkg-parsechangelog --show-field Version)
 
-find ".." -maxdepth 1 -name "*${version}*.changes" -type f -print -exec lintian "${INPUT_LINTIAN_OPTS}" '{}' \+
+find ".." -maxdepth 1 -name "*${version}*.changes" -type f -print -exec lintian ${INPUT_LINTIAN_OPTS} '{}' \+

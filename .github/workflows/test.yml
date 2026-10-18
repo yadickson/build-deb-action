@@ -437,6 +437,8 @@ jobs:
           buildpackage-opts: --build=binary --no-sign
           source-dir: test
       - run: |
+          ls -ls debian/artifacts
+      - run: |
           dpkg --info debian/artifacts/test_1_amd64.deb
           dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
           test -f debian/artifacts/test_1_amd64.buildinfo

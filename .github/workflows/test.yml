@@ -446,7 +446,7 @@ jobs:
           printf "${{ steps.build.outputs.artifacts }}" | grep -x debian/artifacts/test_1_amd64.buildinfo
           printf "${{ steps.build.outputs.artifacts }}" | grep -x debian/artifacts/test_1_amd64.changes
           printf "${{ steps.build.outputs.artifacts }}" | grep -x debian/artifacts/test_1_amd64.deb
-          test "$(printf '%s\n' "${{ steps.build.outputs.artifacts }}" | wc -l)" -eq 3
+          test "$(printf '%s\n' "${{ steps.build.outputs.artifacts }}" | wc -l)" -eq 8
 
   probe-env:
     runs-on: ubuntu-latest

@@ -4,7 +4,9 @@ set -eu
 
 cd -- "${INPUT_SOURCE_DIR}"
 
-pkg=$(dpkg-parsechangelog | sed -n 's/^Source: //p')
-version=$(dpkg-parsechangelog | perl -ne 'print $$1 if m{^Version:\s+(?:\d+:)?(\d.*)(?:\-\d+.*)};')
+pkg=$(dpkg-parsechangelog -ldebian/changelog | sed -n 's/^Source: //p')
+version=$(dpkg-parsechangelog -ldebian/changelog | perl -ne 'print $$1 if m{^Version:\s+(?:\d+:)?(\d.*)(?:\-\d+.*)};')
 
-tar --exclude-vcs --exclude=debian --create --gzip --verbose --file="../${pkg}_${version}.orig.tar.gz" .
+if [ !-f "../${pkg}_${version}.orig.tar.gz" ]; then
+  tar --exclude-vcs --exclude=debian --create --gzip --verbose --file="../${pkg}_${version}.orig.tar.gz" .
+fi

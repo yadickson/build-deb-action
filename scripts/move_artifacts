@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 #
 # This script should only depend on packages perl-base (essential) and
-# libdpkg-perl.
+# libdpkg-perl >= 1.18.23.
 #
 
 use strict;
@@ -40,10 +40,6 @@ while (<$files_fh>) {
     # [2] https://www.debian.org/doc/debian-policy/ch-controlfields.html#version
     if (/^([a-z0-9:.+~_-]+.buildinfo) .*/) {
         $changes_filename = $1 =~ s/[.]buildinfo$/.changes/r;
-        last;
-    }
-    elsif (/^([a-z0-9:.+~_-]+.changes) .*/) {
-        $changes_filename = $1 =~ s/[.]changes/.changes/r;
         last;
     }
 }

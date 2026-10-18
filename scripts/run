@@ -181,7 +181,7 @@ in_container /github/action/scripts/build_packages
 end_group
 
 start_group "Moving artifacts"
-in_container /github/action/scripts/move_artifacts || true
+in_container /github/action/scripts/move_artifacts
 end_group
 
 start_group "Setting outputs"

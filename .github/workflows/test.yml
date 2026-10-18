@@ -666,7 +666,7 @@ jobs:
           DEB_BUILD_OPTIONS: noautodbgsym
         with:
           docker-image: debian:wheezy-slim
-          buildpackage-opts: -F -us -uc -sa -j1 -sn
+          buildpackage-opts: -us -uc -sa -j1
           source-dir: test
           main-repos: |
             # These are intentionally given as two entries:
@@ -678,5 +678,5 @@ jobs:
           test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
           dpkg --info debian/artifacts/test_1_amd64.deb
           dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
-          test -f debian/artifacts/test_1_amd64.buildinfo
-          test -f debian/artifacts/test_1_amd64.changes
+          # test -f debian/artifacts/test_1_amd64.buildinfo # is not created on wheezy
+          test -f debian/artifacts/test_1_amd64.changes # is not created on wheezy

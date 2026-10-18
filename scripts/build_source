@@ -7,4 +7,4 @@ cd -- "${INPUT_SOURCE_DIR}"
 pkg=$(dpkg-parsechangelog --show-field Package)
 version=$(dpkg-parsechangelog --show-field Version)
 
-tar --exclude-vcs --exclude=debian --create --gzip --verbose --file=../${pkg}_${version}.orig.tar.gz .
+tar --exclude-vcs --exclude=debian --create --gzip --verbose --file="../${pkg}_${version}.orig.tar.gz" .

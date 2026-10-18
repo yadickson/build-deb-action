@@ -4,7 +4,7 @@ set -eu
 
 cd -- "${INPUT_SOURCE_DIR}"
 
-version=$(dpkg-parsechangelog --show-field Version)
+version=$(dpkg-parsechangelog --show-field Version || dpkg-parsechangelog | sed -n 's/^Version: //p')
 
 mkdir -p "${GITHUB_WORKSPACE}/${INPUT_ARTIFACTS_DIR}"
 

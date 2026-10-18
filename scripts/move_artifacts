@@ -42,6 +42,10 @@ while (<$files_fh>) {
         $changes_filename = $1 =~ s/[.]buildinfo$/.changes/r;
         last;
     }
+    elsif (/^([a-z0-9:.+~_-]+.changes) .*/) {
+        $changes_filename = $1 =~ s/[.]changes/.changes/r;
+        last;
+    }
 }
 close $files_fh or warn 'Failed to close debian/files';
 

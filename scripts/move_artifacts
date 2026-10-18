@@ -6,6 +6,6 @@ cd -- "${INPUT_SOURCE_DIR}"
 
 version=$(dpkg-parsechangelog --show-field Version)
 
-mkdir -p "${INPUT_ARTIFACTS_DIR}"
+mkdir -p "${GITHUB_WORKSPACE}/${INPUT_ARTIFACTS_DIR}"
 
-find "../${INPUT_SOURCE_DIR}" -maxdepth 1 -name "*${version}*.*" -type f -print -exec mv '{}' "${INPUT_ARTIFACTS_DIR}" \;
+find "." -maxdepth 1 -name "*${version}*.*" -type f -print -exec mv '{}' "${GITHUB_WORKSPACE}/${INPUT_ARTIFACTS_DIR}/" \;

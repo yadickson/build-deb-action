@@ -178,9 +178,9 @@ if [ -n "$INPUT_BEFORE_BUILD_HOOK" ]; then
 	end_group
 fi
 
-start_group "Building source file"
-in_container /github/action/scripts/build_source
-end_group
+# start_group "Building source file"
+# in_container /github/action/scripts/build_source
+# end_group
 
 start_group "Building package"
 in_container /github/action/scripts/build_packages

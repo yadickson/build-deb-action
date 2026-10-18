@@ -99,6 +99,7 @@ start_group "Starting build container"
 # will pass them separately:
 env \
 	--unset=INPUT_BEFORE_BUILD_HOOK \
+	--unset=INPUT_MAIN_REPOS \
 	--unset=INPUT_EXTRA_REPO_KEYS \
 	--unset=INPUT_EXTRA_REPOS \
 	--unset=INPUT_SETUP_HOOK \
@@ -114,6 +115,7 @@ container_id=$(
 		--env-file="$env_file" \
 		--env=GITHUB_ACTION_PATH=/github/action \
 		--env=GITHUB_WORKSPACE=/github/workspace \
+		--env=INPUT_MAIN_REPOS \
 		--env=INPUT_EXTRA_REPOS \
 		--mount="type=bind,src=${GITHUB_ACTION_PATH},dst=/github/action,ro" \
 		--mount="type=bind,src=${build_dir},dst=/github/build" \
@@ -157,12 +159,6 @@ in_container install \
 	/github/build/gitconfig \
 	/etc/gitconfig
 end_group
-
-if [ "$INPUT_CLEAN_REPOS" = "true" ]; then
-	start_group "Executing clear source list"
-	in_container /github/action/scripts/clear_source_list
-	end_group
-fi
 
 if [ -n "$INPUT_SETUP_HOOK" ]; then
 	start_group "Executing setup hook"

@@ -24,6 +24,17 @@ fi
 # essential packages. It is reasonably safe to blindly assume it is installed.
 printf "man-db man-db/auto-update boolean false\n" | debconf-set-selections
 
+if [ -n "$INPUT_MAIN_REPOS" ]; then
+  printf "%s\n" "" > "/etc/apt/sources.list"
+  printf "%s\n" "" > "/etc/apt/sources.sources"
+	if printf "%s\n" "$INPUT_MAIN_REPOS" | grep -q '^deb'; then
+		extra_repos_ext=.list
+	else
+		extra_repos_ext=.sources
+	fi
+	printf "%s\n" "$INPUT_MAIN_REPOS" >"/etc/apt/sources${extra_repos_ext}"
+fi
+
 if [ -n "$INPUT_EXTRA_REPOS" ]; then
 	if printf "%s\n" "$INPUT_EXTRA_REPOS" | grep -q '^deb'; then
 		extra_repos_ext=.list

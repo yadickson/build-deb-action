@@ -583,8 +583,7 @@ jobs:
           docker-image: debian:bullseye-slim
           buildpackage-opts: --build=binary --no-sign
           source-dir: test
-          clean-repos: true
-          extra-repos: |
+          main-repos: |
             # These are intentionally given as two entries:
             deb [trusted=yes] http://archive.debian.org/debian/ bullseye main contrib
             deb [trusted=yes] http://archive.debian.org/debian/ bullseye-updates main contrib
@@ -612,8 +611,7 @@ jobs:
           docker-image: debian:buster-slim
           buildpackage-opts: --build=binary --no-sign
           source-dir: test
-          clean-repos: true
-          extra-repos: |
+          main-repos: |
             # These are intentionally given as two entries:
             deb [trusted=yes] http://archive.debian.org/debian/ buster main contrib
             deb [trusted=yes] http://archive.debian.org/debian/ buster-updates main contrib
@@ -642,8 +640,7 @@ jobs:
           docker-image: debian:stretch-slim
           buildpackage-opts: --build=binary --no-sign
           source-dir: test
-          clean-repos: true
-          extra-repos: |
+          main-repos: |
             # These are intentionally given as two entries:
             deb [trusted=yes] http://archive.debian.org/debian/ stretch main contrib
             deb [trusted=yes] http://archive.debian.org/debian-security/ stretch/updates main
@@ -669,15 +666,12 @@ jobs:
           DEB_BUILD_OPTIONS: noautodbgsym
         with:
           docker-image: debian:wheezy-slim
-          buildpackage-opts: -rfakeroot -D -us -uc -i -I -sa -j1
+          buildpackage-opts: -rfakeroot -us -uc -sa -j1
           source-dir: test
-          clean-repos: true
-          extra-repos: |
+          main-repos: |
             # These are intentionally given as two entries:
             deb [trusted=yes] http://archive.debian.org/debian/ wheezy main contrib
             deb [trusted=yes] http://archive.debian.org/debian-security/ wheezy/updates main
-            deb-src [trusted=yes] http://archive.debian.org/debian/ wheezy main contrib
-            deb-src [trusted=yes] http://archive.debian.org/debian-security/ wheezy/updates main
       - run: |
           ls -ls debian/artifacts
       - run: |

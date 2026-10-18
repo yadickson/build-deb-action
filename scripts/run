@@ -19,15 +19,6 @@ check_path_prefix()
 	return 1
 }
 
-# Usage:
-#   create_output OUTPUTS_DIR OUTPUT_NAME
-create_output()
-{
-	mkdir -p -- "$1"
-	touch -- "${1%/}/${2}"
-	export -- "OUTPUT_${2}=/github/build/outputs/${2}"
-}
-
 start_group "Preparing"
 build_dir=$(mktemp --directory --tmpdir="${RUNNER_TEMP-}" build-deb-action-XXXXXX)
 printf 'build-dir=%s\n' "$build_dir" >>"$GITHUB_OUTPUT"
@@ -47,8 +38,6 @@ INPUT_SOURCE_DIR=${INPUT_SOURCE_DIR:-.}
 if ! check_path_prefix "$INPUT_SOURCE_DIR" "$GITHUB_WORKSPACE"; then
 	die 2 "source-dir is not in GITHUB_WORKSPACE"
 fi
-
-create_output "$outputs_dir" ARTIFACTS
 
 touch "$extra_repo_key_files_file"
 if [ "$INPUT_EXTRA_REPO_KEYS" ]; then
@@ -78,8 +67,6 @@ if [ "$INPUT_EXTRA_REPO_KEYS" ]; then
 	fi
 fi
 end_group
-
-echo "{ \"deprecated-features\": { \"image-format-v1\": true } }" /etc/docker/daemon.json
 
 if [ -f "$INPUT_DOCKER_IMAGE" ]; then
 	if ! check_path_prefix "$INPUT_DOCKER_IMAGE" "$GITHUB_WORKSPACE"; then

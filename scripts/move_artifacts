@@ -6,4 +6,4 @@ cd -- "${INPUT_SOURCE_DIR}"
 
 version=$(dpkg-parsechangelog --show-field Version)
 
-find "." -maxdepth 1 -name "*${version}*.*" -type f -print -exec mv '{}' "${INPUT_ARTIFACTS_DIR}" \;
+find ".." -maxdepth 1 -name "*${version}*.*" -type f -print -exec mv '{}' "${INPUT_ARTIFACTS_DIR}" \;

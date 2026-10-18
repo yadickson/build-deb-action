@@ -100,6 +100,7 @@ start_group "Starting build container"
 env \
 	--unset=INPUT_BEFORE_BUILD_HOOK \
 	--unset=INPUT_MAIN_REPOS \
+	--unset=INPUT_BACKPORT_REPOS \
 	--unset=INPUT_EXTRA_REPO_KEYS \
 	--unset=INPUT_EXTRA_REPOS \
 	--unset=INPUT_SETUP_HOOK \
@@ -116,6 +117,7 @@ container_id=$(
 		--env=GITHUB_ACTION_PATH=/github/action \
 		--env=GITHUB_WORKSPACE=/github/workspace \
 		--env=INPUT_MAIN_REPOS \
+		--env=INPUT_BACKPORT_REPOS \
 		--env=INPUT_EXTRA_REPOS \
 		--mount="type=bind,src=${GITHUB_ACTION_PATH},dst=/github/action,ro" \
 		--mount="type=bind,src=${build_dir},dst=/github/build" \
@@ -176,12 +178,20 @@ if [ -n "$INPUT_BEFORE_BUILD_HOOK" ]; then
 	end_group
 fi
 
+start_group "Building source file"
+in_container /github/action/scripts/build_source
+end_group
+
 start_group "Building package"
 in_container /github/action/scripts/build_packages
 end_group
 
 start_group "Moving artifacts"
 in_container /github/action/scripts/move_artifacts
+end_group
+
+start_group "Running lintian"
+in_container /github/action/scripts/running_lintian
 end_group
 
 start_group "Setting outputs"

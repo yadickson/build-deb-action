@@ -24,6 +24,9 @@ inputs:
   main-repos:
     description: Overrides main APT repositories to configure in the build environment (one-line-style or deb822-style format)
     required: false
+  backport-repos:
+    description: Overrides backport APT repositories to configure in the build environment (one-line-style or deb822-style format)
+    required: false
   extra-build-deps:
     description: Extra packages to be installed as build dependencies
     required: false
@@ -47,6 +50,10 @@ inputs:
     default: ./
     description: Path relative to $GITHUB_WORKSPACE that contains the package sources
     required: true
+  lintian-opts:
+    default: ""
+    description: Command line parameters provided to 'lintian'
+    required: false
 outputs:
   artifacts:
     description: Newline-separated list of artifacts (the .buildinfo, .changes
@@ -64,6 +71,7 @@ runs:
         INPUT_BUILDPACKAGE_OPTS: ${{ inputs.buildpackage-opts }}
         INPUT_DOCKER_IMAGE: ${{ inputs.docker-image }}
         INPUT_MAIN_REPOS: ${{ inputs.main-repos }}
+        INPUT_BACKPORT_REPOS: ${{ inputs.backport-repos }}
         INPUT_EXTRA_BUILD_DEPS: ${{ inputs.extra-build-deps }}
         INPUT_EXTRA_DOCKER_ARGS: ${{ inputs.extra-docker-args }}
         INPUT_EXTRA_REPO_KEYS: ${{  inputs.extra-repo-keys }}
@@ -71,6 +79,7 @@ runs:
         INPUT_HOST_ARCH: ${{ inputs.host-arch }}
         INPUT_SETUP_HOOK: ${{ inputs.setup-hook }}
         INPUT_SOURCE_DIR: ${{ inputs.source-dir }}
+        INPUT_LINTIAN_OPTS: ${{ inputs.lintian-opts }}
       id: run
       run: ${{ github.action_path }}/scripts/run
       shell: bash

@@ -666,7 +666,6 @@ jobs:
           DEB_BUILD_OPTIONS: noautodbgsym
         with:
           docker-image: debian:jessie-slim
-          buildpackage-opts: --build=binary --no-sign
           extra-build-deps: libparse-debcontrol-perl
           source-dir: test
           main-repos: |
@@ -696,7 +695,6 @@ jobs:
           DEB_BUILD_OPTIONS: noautodbgsym
         with:
           docker-image: debian:wheezy-slim
-          buildpackage-opts: --build=binary --no-sign
           extra-build-deps: libparse-debcontrol-perl
           source-dir: test
           main-repos: |
@@ -726,7 +724,6 @@ jobs:
           DEB_BUILD_OPTIONS: noautodbgsym
         with:
           docker-image: debian:squeeze
-          buildpackage-opts: --build=binary --no-sign
           extra-build-deps: libparse-debcontrol-perl
           source-dir: test
           main-repos: |

@@ -180,9 +180,9 @@ if [ -n "$INPUT_BEFORE_BUILD_HOOK" ]; then
 	end_group
 fi
 
-# start_group "Building source file"
-# in_container /github/action/scripts/build_source
-# end_group
+start_group "Building source file"
+in_container /github/action/scripts/build_source
+end_group
 
 start_group "Building package"
 in_container /github/action/scripts/build_packages
@@ -194,14 +194,4 @@ end_group
 
 start_group "Running lintian"
 in_container /github/action/scripts/running_lintian
-end_group
-
-start_group "Setting outputs"
-for output in "$outputs_dir"/*; do
-	{
-		printf '%s<<EOF\n' "${output##*/}"
-		cat -- "$output"
-		printf 'EOF\n'
-	} >>"$GITHUB_OUTPUT"
-done
 end_group

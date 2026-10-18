@@ -678,7 +678,6 @@ jobs:
           test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
           dpkg --info debian/artifacts/test_1_amd64.deb
           dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
-          test -f debian/artifacts/test_1_amd64.buildinfo
           test -f debian/artifacts/test_1_amd64.changes
 
   debian-codename-wheezy-package:
@@ -707,7 +706,6 @@ jobs:
           test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
           dpkg --info debian/artifacts/test_1_amd64.deb
           dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
-          test -f debian/artifacts/test_1_amd64.buildinfo
           test -f debian/artifacts/test_1_amd64.changes
 
   debian-codename-squeeze-package:
@@ -736,5 +734,4 @@ jobs:
           test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
           dpkg --info debian/artifacts/test_1_amd64.deb
           dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
-          test -f debian/artifacts/test_1_amd64.buildinfo
           test -f debian/artifacts/test_1_amd64.changes

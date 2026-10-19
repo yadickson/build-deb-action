@@ -581,11 +581,6 @@ jobs:
           docker-image: debian:bullseye-slim
           buildpackage-opts: --build=binary --no-sign
           source-dir: test
-          main-repos: |
-            # These are intentionally given as two entries:
-            deb [trusted=yes] http://archive.debian.org/debian/ bullseye main contrib
-            deb [trusted=yes] http://archive.debian.org/debian/ bullseye-updates main contrib
-            deb [trusted=yes] http://archive.debian.org/debian-security/ bullseye-security main
       - run: |
           ls -ls debian/artifacts
       - run: |
@@ -609,11 +604,6 @@ jobs:
           docker-image: debian:buster-slim
           buildpackage-opts: --build=binary --no-sign
           source-dir: test
-          main-repos: |
-            # These are intentionally given as two entries:
-            deb [trusted=yes] http://archive.debian.org/debian/ buster main contrib
-            deb [trusted=yes] http://archive.debian.org/debian/ buster-updates main contrib
-            deb [trusted=yes] http://archive.debian.org/debian-security/ buster/updates main
       - run: |
           ls -ls debian/artifacts
       - run: |
@@ -639,10 +629,6 @@ jobs:
           docker-image: debian:stretch-slim
           buildpackage-opts: --build=binary --no-sign
           source-dir: test
-          main-repos: |
-            # These are intentionally given as two entries:
-            deb [trusted=yes] http://archive.debian.org/debian/ stretch main contrib
-            deb [trusted=yes] http://archive.debian.org/debian-security/ stretch/updates main
       - run: |
           ls -ls debian/artifacts
       - run: |
@@ -667,10 +653,6 @@ jobs:
         with:
           docker-image: debian:jessie-slim
           source-dir: test
-          main-repos: |
-            # These are intentionally given as two entries:
-            deb [trusted=yes] http://archive.debian.org/debian/ jessie main contrib
-            deb [trusted=yes] http://archive.debian.org/debian-security/ jessie/updates main
       - run: |
           ls -ls debian/artifacts
       - run: |
@@ -694,10 +676,6 @@ jobs:
         with:
           docker-image: debian:wheezy-slim
           source-dir: test
-          main-repos: |
-            # These are intentionally given as two entries:
-            deb [trusted=yes] http://archive.debian.org/debian/ wheezy main contrib
-            deb [trusted=yes] http://archive.debian.org/debian-security/ wheezy/updates main
       - run: |
           ls -ls debian/artifacts
       - run: |

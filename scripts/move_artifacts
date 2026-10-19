@@ -2,8 +2,10 @@
 
 set -eu
 
-version=$(dpkg-parsechangelog -l"${INPUT_SOURCE_DIR}/debian/changelog" | perl -ne 'print $1 if m{^Version:\s+(?:\d+:)?(\d.*)(?:\-\d+.*)};')
+cd -- "${INPUT_SOURCE_DIR}"
+
+version=$(dpkg-parsechangelog -l"debian/changelog" | perl -ne 'print $1 if m{^Version:\s+(?:\d+:)?(\d.*)(?:\-\d+.*)};')
 
 mkdir -p "${GITHUB_WORKSPACE}/${INPUT_ARTIFACTS_DIR}"
 
-find "../${INPUT_SOURCE_DIR}" -maxdepth 1 -name "*${version}*.*" -type f -print -exec mv '{}' "${GITHUB_WORKSPACE}/${INPUT_ARTIFACTS_DIR}/" \;
+find ".." -maxdepth 1 -name "*${version}*.*" -type f -print -exec mv '{}' "${GITHUB_WORKSPACE}/${INPUT_ARTIFACTS_DIR}/" \;

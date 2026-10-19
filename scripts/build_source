@@ -2,9 +2,11 @@
 
 set -eu
 
-pkg=$(dpkg-parsechangelog -l"${INPUT_SOURCE_DIR}/debian/changelog" | sed -n 's/^Source: //p')
-version=$(dpkg-parsechangelog -l"${INPUT_SOURCE_DIR}/debian/changelog" | perl -ne 'print $1 if m{^Version:\s+(?:\d+:)?(\d.*)(?:\-\d+.*)};')
+cd -- "${INPUT_SOURCE_DIR}"
 
-if [ ! -e "../${INPUT_SOURCE_DIR}/${pkg}_${version}.orig.tar.gz" ]; then
-  tar --exclude-vcs --exclude=debian --create --gzip --verbose --file="../${INPUT_SOURCE_DIR}/${pkg}_${version}.orig.tar.gz" .
+pkg=$(dpkg-parsechangelog -l"debian/changelog" | sed -n 's/^Source: //p')
+version=$(dpkg-parsechangelog -l"debian/changelog" | perl -ne 'print $1 if m{^Version:\s+(?:\d+:)?(\d.*)(?:\-\d+.*)};')
+
+if [ ! -e "../${pkg}_${version}.orig.tar.gz" ]; then
+  tar --exclude-vcs --exclude=debian --create --gzip --verbose --file="../${pkg}_${version}.orig.tar.gz" .
 fi

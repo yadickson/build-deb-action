@@ -4,6 +4,8 @@ set -eu
 
 cd -- "${INPUT_SOURCE_DIR}"
 
+dpkg-parsechangelog -l"debian/changelog"
+
 pkg=$(dpkg-parsechangelog -l"debian/changelog" | sed -n 's/^Source: //p')
 version=$(dpkg-parsechangelog -l"debian/changelog" | perl -ne 'print $1 if m{^Version:\s+(?:\d+:)?(\d.*)(?:\-\d+.*)};')
 

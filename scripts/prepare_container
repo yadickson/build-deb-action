@@ -16,7 +16,7 @@ cat >"$APT_CONF_FILE" <<-EOF
 	quiet "yes";
 EOF
 
-OS_ID=$(cat /etc/os-release | perl -ne 'print $1 if m{^ID="(.*)"};') || true
+OS_ID=$(cat /etc/os-release | perl -ne 'print $1 if m{^ID=(.*)};') || true
 OS_VERSION=$(cat /etc/os-release | perl -ne 'print $1 if m{^VERSION_ID="(.*)"};') || true
 
 echo ${OS_ID}

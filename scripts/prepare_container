@@ -16,6 +16,7 @@ cat >"$APT_CONF_FILE" <<-EOF
 	quiet "yes";
 EOF
 
+cat /etc/os-release
 cat /etc/debian_version
 
 # Adapted from pbuilder's and sbuild's support for cross-building:

@@ -41,7 +41,7 @@ if [ -z "$INPUT_MAIN_REPOS" ]; then
       deb [trusted=yes] http://archive.debian.org/debian/ buster-updates main contrib
       deb [trusted=yes] http://archive.debian.org/debian-security/ buster/updates main contrib
     EOF
-  elif [ "${OS_ID}" = "debian" && "${OS_VERSION}" = "10" ]; then
+  elif [ "${OS_ID}" = "debian" && "${OS_VERSION}" = "11" ]; then
     cat >"$INPUT_MAIN_REPOS" <<-EOF
       deb [trusted=yes] http://archive.debian.org/debian/ bullseye main contrib
       deb [trusted=yes] http://archive.debian.org/debian/ bullseye-updates main contrib

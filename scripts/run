@@ -86,6 +86,7 @@ start_group "Starting build container"
 # Docker does not like variable values containing newlines in an --env-file, we
 # will pass them separately:
 env \
+	--unset=INPUT_BEFORE_INSTALL_BUILD_DEPS \
 	--unset=INPUT_BEFORE_BUILD_HOOK \
 	--unset=INPUT_MAIN_REPOS \
 	--unset=INPUT_BACKPORT_REPOS \
@@ -153,6 +154,16 @@ end_group
 if [ -n "$INPUT_SETUP_HOOK" ]; then
 	start_group "Executing setup hook"
 	in_container /bin/sh -c "$INPUT_SETUP_HOOK"
+	end_group
+fi
+
+start_group "Preparing container"
+in_container /github/action/scripts/prepare_container
+end_group
+
+if [ -n "${INPUT_BEFORE_INSTALL_BUILD_DEPS}" ]; then
+	start_group "Executing before-install build deps"
+	in_container /bin/sh -c "${INPUT_BEFORE_INSTALL_BUILD_DEPS}"
 	end_group
 fi
 

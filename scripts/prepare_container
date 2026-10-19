@@ -19,41 +19,36 @@ EOF
 OS_ID=$(cat /etc/os-release | perl -ne 'print $1 if m{^ID=(.*)};') || true
 OS_VERSION=$(cat /etc/os-release | perl -ne 'print $1 if m{^VERSION_ID="(.*)"};') || true
 
-echo ${OS_ID}
-echo ${OS_VERSION}
-
 if [ -z "$INPUT_MAIN_REPOS" ]; then
   if [ "${OS_ID}" = "debian" ] && [ "${OS_VERSION}" = "7" ]; then
-read -r -d '' INPUT_MAIN_REPOS << EOM
+    INPUT_MAIN_REPOS="
 deb [trusted=yes] http://archive.debian.org/debian/ wheezy main contrib
 deb [trusted=yes] http://archive.debian.org/debian-security/ wheezy/updates main contrib
-EOM
+"
   elif [ "${OS_ID}" = "debian" ] && [ "${OS_VERSION}" = "8" ]; then
-read -r -d '' INPUT_MAIN_REPOS << EOM
+    INPUT_MAIN_REPOS="
 deb [trusted=yes] http://archive.debian.org/debian/ jessie main contrib
 deb [trusted=yes] http://archive.debian.org/debian-security/ jessie/updates main contrib
-EOM
+"
   elif [ "${OS_ID}" = "debian" ] && [ "${OS_VERSION}" = "9" ]; then
-read -r -d '' INPUT_MAIN_REPOS << EOM
+    INPUT_MAIN_REPOS="
 deb [trusted=yes] http://archive.debian.org/debian/ stretch main contrib
 deb [trusted=yes] http://archive.debian.org/debian-security/ stretch/updates main contrib
-EOM
+"
   elif [ "${OS_ID}" = "debian" ] && [ "${OS_VERSION}" = "10" ]; then
-read -r -d '' INPUT_MAIN_REPOS << EOM
+    INPUT_MAIN_REPOS="
 deb [trusted=yes] http://archive.debian.org/debian/ buster main contrib
 deb [trusted=yes] http://archive.debian.org/debian/ buster-updates main contrib
 deb [trusted=yes] http://archive.debian.org/debian-security/ buster/updates main contrib
-EOM
+"
   elif [ "${OS_ID}" = "debian" ] && [ "${OS_VERSION}" = "11" ]; then
-read -r -d '' INPUT_MAIN_REPOS << EOM
+    INPUT_MAIN_REPOS="
 deb [trusted=yes] http://archive.debian.org/debian/ bullseye main contrib
 deb [trusted=yes] http://archive.debian.org/debian/ bullseye-updates main contrib
 deb [trusted=yes] http://archive.debian.org/debian-security/ bullseye-security main contrib
-EOM
+"
   fi
 fi
-
-echo "$INPUT_MAIN_REPOS"
 
 # Adapted from pbuilder's and sbuild's support for cross-building:
 if [ -n "$INPUT_HOST_ARCH" ]; then

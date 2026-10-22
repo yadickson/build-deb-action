@@ -4,6 +4,6 @@ set -eu
 
 cd -- "${INPUT_SOURCE_DIR}"
 # shellcheck disable=SC2086
-apt-get build-dep ${INPUT_APT_OPTS} . || mk-build-deps --install --remove debian/control || mk-build-deps --help
+apt-get build-dep ${INPUT_APT_OPTS} . || mk-build-deps --install --remove debian/control || mk-build-deps debian/control
 
 rm -rf "*.deb"

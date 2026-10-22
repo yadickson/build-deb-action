@@ -102,4 +102,4 @@ apt-get upgrade -y
 # shellcheck disable=SC2086
 apt-get install ${INPUT_APT_OPTS} -- devscripts equivs dpkg-dev lintian tar ${INPUT_EXTRA_BUILD_DEPS}
 # shellcheck disable=SC2086
-apt-get install ${INPUT_APT_OPTS} -- libparse-debcontrol-perl || true
+apt-get install ${INPUT_APT_OPTS} -- build-essential libparse-debcontrol-perl || true

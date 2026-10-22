@@ -4,7 +4,7 @@ set -eu
 
 cd -- "${INPUT_SOURCE_DIR}"
 
-version=$(dpkg-parsechangelog -l"debian/changelog" | perl -ne 'print $1 if m{^Version:\s+(?:\d+:)?(\d.*)(?:\-\d+.*)};')
+version=$(dpkg-parsechangelog -l"debian/changelog" | LANG=C perl -ne 'print $1 if m{^Version:\s+(?:\d+:)?(\d.*)(?:\-\d+.*)};')
 
 # shellcheck disable=SC2086
 find ".." -maxdepth 1 -name "*${version}*.changes" -type f -print -exec lintian ${INPUT_LINTIAN_OPTS} '{}' \+

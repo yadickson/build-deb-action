@@ -753,6 +753,8 @@ jobs:
           main-repos: |
             deb [trusted=yes] http://archive.debian.org/debian/ etch main contrib
             deb [trusted=yes] http://archive.debian.org/debian-security/ etch/updates main contrib
+            deb-src [trusted=yes] http://archive.debian.org/debian/ etch main contrib
+            deb-src [trusted=yes] http://archive.debian.org/debian-security/ etch/updates main contrib
           source-dir: test
       - run: |
           ls -ls debian/artifacts

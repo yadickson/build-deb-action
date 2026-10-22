@@ -749,6 +749,7 @@ jobs:
         env:
           DEB_BUILD_OPTIONS: noautodbgsym
         with:
+          buildpackage-opts: -d
           docker-image: debian/eol:etch
           main-repos: |
             deb [trusted=yes] http://archive.debian.org/debian/ etch main contrib

@@ -689,9 +689,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
-          sed -i "s/debhelper-compat (= 13)/debhelper (>= 8)/g" test/debian/control
+          sed -i "s/debhelper-compat (= 13)/debhelper (>= 7)/g" test/debian/control
           sed -i "s/Standards-Version: 4.5.0/Standards-Version: 3.9.8/g" test/debian/control
-          echo "8" > test/debian/compat
+          echo "7" > test/debian/compat
         shell: bash
       - uses: ./
         env:
@@ -715,9 +715,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
-          sed -i "s/debhelper-compat (= 13)/debhelper (>= 8)/g" test/debian/control
+          sed -i "s/debhelper-compat (= 13)/debhelper (>= 6)/g" test/debian/control
           sed -i "s/Standards-Version: 4.5.0/Standards-Version: 3.9.8/g" test/debian/control
-          echo "8" > test/debian/compat
+          echo "6" > test/debian/compat
         shell: bash
       - uses: ./
         env:
@@ -741,9 +741,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
-          sed -i "s/debhelper-compat (= 13)/debhelper (>= 8)/g" test/debian/control
+          sed -i "s/debhelper-compat (= 13)/debhelper (>= 4)/g" test/debian/control
           sed -i "s/Standards-Version: 4.5.0/Standards-Version: 3.9.8/g" test/debian/control
-          echo "8" > test/debian/compat
+          echo "4" > test/debian/compat
         shell: bash
       - uses: ./
         env:

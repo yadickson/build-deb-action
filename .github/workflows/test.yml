@@ -697,7 +697,7 @@ jobs:
         env:
           DEB_BUILD_OPTIONS: noautodbgsym
         with:
-          docker-image: madworx/debian-archive:squeeze
+          docker-image: debian/eol:squeeze
           main-repos: |
             deb [trusted=yes] http://archive.debian.org/debian/ squeeze main contrib
             deb [trusted=yes] http://archive.debian.org/debian-security/ squeeze/updates main contrib
@@ -723,7 +723,7 @@ jobs:
         env:
           DEB_BUILD_OPTIONS: noautodbgsym
         with:
-          docker-image: madworx/debian-archive:lenny
+          docker-image: debian/eol:lenny
           main-repos: |
             deb [trusted=yes] http://archive.debian.org/debian/ lenny main contrib
             deb [trusted=yes] http://archive.debian.org/debian-security/ lenny/updates main contrib
@@ -749,7 +749,7 @@ jobs:
         env:
           DEB_BUILD_OPTIONS: noautodbgsym
         with:
-          docker-image: madworx/debian-archive:etch
+          docker-image: debian/eol:etch
           main-repos: |
             deb [trusted=yes] http://archive.debian.org/debian/ etch main contrib
             deb [trusted=yes] http://archive.debian.org/debian-security/ etch/updates main contrib

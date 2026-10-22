@@ -112,7 +112,6 @@ container_id=$(
 		--mount="type=bind,src=${build_dir},dst=/github/build" \
 		--mount="type=bind,src=${GITHUB_WORKSPACE},dst=/github/workspace" \
 		--rm \
-		-it \
 		--workdir=/github/workspace \
 		-- \
 		"$INPUT_DOCKER_IMAGE" \

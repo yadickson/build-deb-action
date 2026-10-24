@@ -651,7 +651,7 @@ jobs:
         env:
           DEB_BUILD_OPTIONS: noautodbgsym
         with:
-          docker-image: debian:jessie-slim
+          docker-image: debian/eol:jessie
           source-dir: test
       - run: |
           ls -ls debian/artifacts

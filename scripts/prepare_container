@@ -132,6 +132,8 @@ apt-get install ${INPUT_APT_OPTS} -- build-essential
 # shellcheck disable=SC2086
 apt-get install ${INPUT_APT_OPTS} -- libparse-debcontrol-perl || true
 
+apt-get --reinstall install libc-bin || true
+
 if [ -n "INPUT_EXTRA_BUILD_DEPS" ]; then
 # shellcheck disable=SC2086
 apt-get install ${INPUT_APT_OPTS} -- ${INPUT_EXTRA_BUILD_DEPS} || true

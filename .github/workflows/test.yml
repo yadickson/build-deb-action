@@ -578,7 +578,7 @@ jobs:
         env:
           DEB_BUILD_OPTIONS: noautodbgsym
         with:
-          docker-image: debian:bullseye-slim
+          docker-image: debian/eol:bullseye
           buildpackage-opts: --build=binary --no-sign
           source-dir: test
       - run: |

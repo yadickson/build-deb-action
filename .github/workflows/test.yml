@@ -601,7 +601,7 @@ jobs:
         env:
           DEB_BUILD_OPTIONS: noautodbgsym
         with:
-          docker-image: debian:buster-slim
+          docker-image: debian/eol:buster
           buildpackage-opts: --build=binary --no-sign
           source-dir: test
       - run: |
@@ -626,7 +626,7 @@ jobs:
         env:
           DEB_BUILD_OPTIONS: noautodbgsym
         with:
-          docker-image: debian:stretch-slim
+          docker-image: debian/eol:stretch
           buildpackage-opts: --build=binary --no-sign
           source-dir: test
       - run: |
@@ -674,7 +674,7 @@ jobs:
         env:
           DEB_BUILD_OPTIONS: noautodbgsym
         with:
-          docker-image: debian:wheezy-slim
+          docker-image: debian/eol:wheezy
           source-dir: test
       - run: |
           ls -ls debian/artifacts
@@ -745,11 +745,6 @@ jobs:
         with:
           buildpackage-opts: -d
           docker-image: debian/eol:etch
-          main-repos: |
-            deb [trusted=yes] http://archive.debian.org/debian/ etch main contrib
-            deb [trusted=yes] http://archive.debian.org/debian-security/ etch/updates main contrib
-            deb-src [trusted=yes] http://archive.debian.org/debian/ etch main contrib
-            deb-src [trusted=yes] http://archive.debian.org/debian-security/ etch/updates main contrib
           source-dir: test
       - run: |
           ls -ls debian/artifacts

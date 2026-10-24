@@ -100,6 +100,18 @@ apt-get upgrade -y
 # build-dep` will *always* install build-essential which depends on dpkg-dev.
 # But let’s be explicit here.
 # shellcheck disable=SC2086
-apt-get install ${INPUT_APT_OPTS} -- devscripts equivs dpkg-dev lintian tar ${INPUT_EXTRA_BUILD_DEPS}
+apt-get install ${INPUT_APT_OPTS} -- devscripts
 # shellcheck disable=SC2086
-apt-get install ${INPUT_APT_OPTS} -- build-essential libparse-debcontrol-perl || true
+apt-get install ${INPUT_APT_OPTS} -- equivs
+# shellcheck disable=SC2086
+apt-get install ${INPUT_APT_OPTS} -- dpkg-dev
+# shellcheck disable=SC2086
+apt-get install ${INPUT_APT_OPTS} -- lintian
+# shellcheck disable=SC2086
+apt-get install ${INPUT_APT_OPTS} -- tar
+# shellcheck disable=SC2086
+apt-get install ${INPUT_APT_OPTS} -- build-essential
+# shellcheck disable=SC2086
+apt-get install ${INPUT_APT_OPTS} -- libparse-debcontrol-perl
+# shellcheck disable=SC2086
+apt-get install ${INPUT_APT_OPTS} -- ${INPUT_EXTRA_BUILD_DEPS}l || true

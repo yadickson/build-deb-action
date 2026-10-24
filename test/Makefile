@@ -1,6 +1,6 @@
 bindir=$(exec_prefix)/bin
 exec_prefix=$(prefix)
-prefix=/usr/local
+prefix=/usr
 
 INSTALL:=install
 INSTALL_PROGRAM:=$(INSTALL)

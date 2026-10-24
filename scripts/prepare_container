@@ -16,58 +16,6 @@ cat >"$APT_CONF_FILE" <<-EOF
 	quiet "yes";
 EOF
 
-#OS_ID=$(cat /etc/os-release | perl -ne 'print $1 if m{^ID=(.*)};') || 'debian'
-#OS_VERSION=$(cat /etc/os-release | perl -ne 'print $1 if m{^VERSION_ID="(.*)"};') || $(cat /etc/debian_version | awk -F . '{print $1}') || true
-#
-#if [ -z "$INPUT_MAIN_REPOS" ]; then
-#  if [ "${OS_ID}" = "debian" ] && [ "${OS_VERSION}" = "4" ]; then
-#    INPUT_MAIN_REPOS="
-#deb [trusted=yes] http://archive.debian.org/debian/ etch main
-#deb [trusted=yes] http://archive.debian.org/debian-security/ etch/updates main
-#deb-src [trusted=yes] http://archive.debian.org/debian/ etch main
-#deb-src [trusted=yes] http://archive.debian.org/debian-security/ etch/updates main
-#"
-#  elif [ "${OS_ID}" = "debian" ] && [ "${OS_VERSION}" = "5" ]; then
-#    INPUT_MAIN_REPOS="
-#deb [trusted=yes] http://archive.debian.org/debian/ lenny main
-#deb [trusted=yes] http://archive.debian.org/debian-security/ lenny/updates main
-#"
-#  elif [ "${OS_ID}" = "debian" ] && [ "${OS_VERSION}" = "6" ]; then
-#    INPUT_MAIN_REPOS="
-#deb [trusted=yes] http://archive.debian.org/debian/ squeeze main
-#deb [trusted=yes] http://archive.debian.org/debian-security/ squeeze/updates main
-#deb [trusted=yes] http://archive.debian.org/debian squeeze-lts main
-#"
-#  elif [ "${OS_ID}" = "debian" ] && [ "${OS_VERSION}" = "7" ]; then
-#    INPUT_MAIN_REPOS="
-#deb [trusted=yes] http://archive.debian.org/debian/ wheezy main
-#deb [trusted=yes] http://archive.debian.org/debian-security/ wheezy/updates main
-#"
-#  elif [ "${OS_ID}" = "debian" ] && [ "${OS_VERSION}" = "8" ]; then
-#    INPUT_MAIN_REPOS="
-#deb [trusted=yes] http://archive.debian.org/debian/ jessie main
-#deb [trusted=yes] http://archive.debian.org/debian-security/ jessie/updates main
-#"
-#  elif [ "${OS_ID}" = "debian" ] && [ "${OS_VERSION}" = "9" ]; then
-#    INPUT_MAIN_REPOS="
-#deb [trusted=yes] http://archive.debian.org/debian/ stretch main
-#deb [trusted=yes] http://archive.debian.org/debian-security/ stretch/updates main
-#"
-#  elif [ "${OS_ID}" = "debian" ] && [ "${OS_VERSION}" = "10" ]; then
-#    INPUT_MAIN_REPOS="
-#deb [trusted=yes] http://archive.debian.org/debian/ buster main
-#deb [trusted=yes] http://archive.debian.org/debian/ buster-updates main
-#deb [trusted=yes] http://archive.debian.org/debian-security/ buster/updates main
-#"
-#  elif [ "${OS_ID}" = "debian" ] && [ "${OS_VERSION}" = "11" ]; then
-#    INPUT_MAIN_REPOS="
-#deb [trusted=yes] http://archive.debian.org/debian/ bullseye main
-#deb [trusted=yes] http://archive.debian.org/debian/ bullseye-updates main
-#deb [trusted=yes] http://archive.debian.org/debian-security/ bullseye-security main
-#"
-#  fi
-#fi
-
 # Adapted from pbuilder's and sbuild's support for cross-building:
 if [ -n "$INPUT_HOST_ARCH" ]; then
 	dpkg --add-architecture "$INPUT_HOST_ARCH"

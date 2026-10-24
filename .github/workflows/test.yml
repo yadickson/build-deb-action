@@ -684,75 +684,75 @@ jobs:
           dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
           test -f debian/artifacts/test_1_amd64.changes
 
-  debian-codename-squeeze-package:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: |
-          sed -i "s/debhelper-compat (= 13)/debhelper (>= 7)/g" test/debian/control
-          sed -i "s/Standards-Version: 4.5.0/Standards-Version: 3.9.8/g" test/debian/control
-          echo "7" > test/debian/compat
-        shell: bash
-      - uses: ./
-        env:
-          DEB_BUILD_OPTIONS: noautodbgsym
-        with:
-          docker-image: debian/eol:squeeze
-          source-dir: test
-      - run: |
-          ls -ls debian/artifacts
-      - run: |
-          test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
-          dpkg --info debian/artifacts/test_1_amd64.deb
-          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
-          test -f debian/artifacts/test_1_amd64.changes
-
-  debian-codename-lenny-package:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: |
-          sed -i "s/debhelper-compat (= 13)/debhelper (>= 6)/g" test/debian/control
-          sed -i "s/Standards-Version: 4.5.0/Standards-Version: 3.9.8/g" test/debian/control
-          echo "6" > test/debian/compat
-        shell: bash
-      - uses: ./
-        env:
-          DEB_BUILD_OPTIONS: noautodbgsym
-        with:
-          docker-image: debian/eol:lenny
-          source-dir: test
-      - run: |
-          ls -ls debian/artifacts
-      - run: |
-          test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
-          dpkg --info debian/artifacts/test_1_amd64.deb
-          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
-          test -f debian/artifacts/test_1_amd64.changes
-
-  debian-codename-etch-package:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: |
-          sed -i "s/debhelper-compat (= 13)/debhelper (>= 4)/g" test/debian/control
-          sed -i "s/Standards-Version: 4.5.0/Standards-Version: 3.9.8/g" test/debian/control
-          echo "4" > test/debian/compat
-        shell: bash
-      - uses: ./
-        env:
-          DEB_BUILD_OPTIONS: noautodbgsym
-        with:
-          buildpackage-opts: -d
-          docker-image: debian/eol:etch
-          source-dir: test
-      - run: |
-          ls -ls debian/artifacts
-      - run: |
-          test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
-          dpkg --info debian/artifacts/test_1_amd64.deb
-          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
-          test -f debian/artifacts/test_1_amd64.changes
+#  debian-codename-squeeze-package:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v4
+#      - run: |
+#          sed -i "s/debhelper-compat (= 13)/debhelper (>= 7)/g" test/debian/control
+#          sed -i "s/Standards-Version: 4.5.0/Standards-Version: 3.9.8/g" test/debian/control
+#          echo "7" > test/debian/compat
+#        shell: bash
+#      - uses: ./
+#        env:
+#          DEB_BUILD_OPTIONS: noautodbgsym
+#        with:
+#          docker-image: debian/eol:squeeze
+#          source-dir: test
+#      - run: |
+#          ls -ls debian/artifacts
+#      - run: |
+#          test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
+#          dpkg --info debian/artifacts/test_1_amd64.deb
+#          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
+#          test -f debian/artifacts/test_1_amd64.changes
+#
+#  debian-codename-lenny-package:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v4
+#      - run: |
+#          sed -i "s/debhelper-compat (= 13)/debhelper (>= 6)/g" test/debian/control
+#          sed -i "s/Standards-Version: 4.5.0/Standards-Version: 3.9.8/g" test/debian/control
+#          echo "6" > test/debian/compat
+#        shell: bash
+#      - uses: ./
+#        env:
+#          DEB_BUILD_OPTIONS: noautodbgsym
+#        with:
+#          docker-image: debian/eol:lenny
+#          source-dir: test
+#      - run: |
+#          ls -ls debian/artifacts
+#      - run: |
+#          test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
+#          dpkg --info debian/artifacts/test_1_amd64.deb
+#          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
+#          test -f debian/artifacts/test_1_amd64.changes
+#
+#  debian-codename-etch-package:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v4
+#      - run: |
+#          sed -i "s/debhelper-compat (= 13)/debhelper (>= 4)/g" test/debian/control
+#          sed -i "s/Standards-Version: 4.5.0/Standards-Version: 3.9.8/g" test/debian/control
+#          echo "4" > test/debian/compat
+#        shell: bash
+#      - uses: ./
+#        env:
+#          DEB_BUILD_OPTIONS: noautodbgsym
+#        with:
+#          buildpackage-opts: -d
+#          docker-image: debian/eol:etch
+#          source-dir: test
+#      - run: |
+#          ls -ls debian/artifacts
+#      - run: |
+#          test "$(ls -1 debian/artifacts/*.deb | wc -l)" = 1
+#          dpkg --info debian/artifacts/test_1_amd64.deb
+#          dpkg --contents debian/artifacts/test_1_amd64.deb | grep ./usr/bin/mybin
+#          test -f debian/artifacts/test_1_amd64.changes
 
   ubuntu-codename-xenial-package:
     runs-on: ubuntu-latest

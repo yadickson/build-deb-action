@@ -4,7 +4,7 @@ set -eu
 
 cd -- "${INPUT_SOURCE_DIR}"
 
-version=$(dpkg-parsechangelog -l"debian/changelog" | LANG=en_GB.UTF8 perl -ne 'print $1 if m{^Version:\s+(?:\d+:)?(\d.*)(?:\-\d+.*)};')
+version=$(dpkg-parsechangelog -l"debian/changelog" | perl -ne 'print $1 if m{^Version:\s+(?:\d+:)?(\d.*)(?:\-\d+.*)};')
 
 mkdir -p "${GITHUB_WORKSPACE}/${INPUT_ARTIFACTS_DIR}"
 

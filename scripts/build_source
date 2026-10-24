@@ -5,7 +5,7 @@ set -eu
 cd -- "${INPUT_SOURCE_DIR}"
 
 pkg=$(dpkg-parsechangelog -l"debian/changelog" | sed -n 's/^Source: //p')
-version=$(dpkg-parsechangelog -l"debian/changelog" | LANG=en_GB.UTF8 perl -ne 'print $1 if m{^Version:\s+(?:\d+:)?(\d.*)(?:\-\d+.*)};')
+version=$(dpkg-parsechangelog -l"debian/changelog" | perl -ne 'print $1 if m{^Version:\s+(?:\d+:)?(\d.*)(?:\-\d+.*)};')
 
 if [ ! -e "../${pkg}_${version}.orig.tar.gz" ]; then
   tar --exclude-vcs --exclude=debian --create --gzip --verbose --file="../${pkg}_${version}.orig.tar.gz" .

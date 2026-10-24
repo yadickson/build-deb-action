@@ -701,6 +701,7 @@ jobs:
           main-repos: |
             deb [trusted=yes] http://archive.debian.org/debian/ squeeze main contrib
             deb [trusted=yes] http://archive.debian.org/debian-security/ squeeze/updates main contrib
+            deb [trusted=yes] http://archive.debian.org/debian squeeze-lts main contrib
           source-dir: test
       - run: |
           ls -ls debian/artifacts

@@ -698,10 +698,6 @@ jobs:
           DEB_BUILD_OPTIONS: noautodbgsym
         with:
           docker-image: debian/eol:squeeze
-          main-repos: |
-            deb [trusted=yes] http://archive.debian.org/debian/ squeeze main contrib
-            deb [trusted=yes] http://archive.debian.org/debian-security/ squeeze/updates main contrib
-            deb [trusted=yes] http://archive.debian.org/debian squeeze-lts main contrib
           source-dir: test
       - run: |
           ls -ls debian/artifacts
@@ -725,9 +721,6 @@ jobs:
           DEB_BUILD_OPTIONS: noautodbgsym
         with:
           docker-image: debian/eol:lenny
-          main-repos: |
-            deb [trusted=yes] http://archive.debian.org/debian/ lenny main contrib
-            deb [trusted=yes] http://archive.debian.org/debian-security/ lenny/updates main contrib
           source-dir: test
       - run: |
           ls -ls debian/artifacts
